@@ -1,0 +1,6 @@
+{
+    "model_name": "TF-IDF + Logistic Regression",
+    "accuracy": 0.667,
+    "f1_score": 0.656,
+    "classification_report": "              precision    recall  f1-score   support\n\n     negatif       0.50      0.50      0.50         2\n        nötr       0.67      1.00      0.80         2\n     pozitif       1.00      0.50      0.67         2\n\n    accuracy                           0.67         6\n   macro avg       0.72      0.67      0.66         6\nweighted avg       0.72      0.67      0.66         6\n"
+}
