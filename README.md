@@ -282,7 +282,7 @@ http://localhost:8000/docs
 
 
 ## Analitik Sayfası
-![Analytics Screenshot]([ANALYTICS_SCREENSHOT])
+![Analytics Screenshot](https://github.com/DogukanBahsi/NLP_Project/blob/main/Veri%20Kayna%C4%9F%C4%B1%20ve%20Yorumlar.png)
 
 ---
 
