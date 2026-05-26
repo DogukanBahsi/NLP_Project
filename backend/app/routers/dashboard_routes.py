@@ -9,6 +9,7 @@ import json
 from app.database import get_db
 from app import models
 from app.nlp.action_planner import generate_action_plan
+from app.services.source_selector import SourceSelector
 
 router = APIRouter(
     prefix="/dashboard",
@@ -155,12 +156,13 @@ def generate_source_analysis(db: Session, hotel_id: Optional[int] = None):
 
     return [
         {
-            "source": row.source or "unknown",
-            "total_reviews": row.total,
-            "average_score": round((row.avg_score or 0) / 10.0, 2),
-            "positive": row.positive or 0,
-            "negative": row.negative or 0,
-            "neutral": row.neutral or 0,
+            "source":         SourceSelector.normalize(row.source),
+            "source_label":   SourceSelector.display_label(row.source),
+            "total_reviews":  row.total,
+            "average_score":  round((row.avg_score or 0) / 10.0, 2),
+            "positive":       row.positive or 0,
+            "negative":       row.negative or 0,
+            "neutral":        row.neutral or 0,
         }
         for row in rows
     ]
@@ -316,6 +318,27 @@ def get_reviews_table(
     }
 
 
+@router.get("/nlp-summary")
+def get_nlp_summary(
+    hotel_id: Optional[int] = None,
+    db: Session = Depends(get_db)
+):
+    from app.nlp.summarizer import generate_hotel_summary
+
+    query = db.query(models.Review)
+    if hotel_id is not None:
+        query = query.filter(models.Review.hotel_id == hotel_id)
+    reviews = query.all()
+
+    hotel_name = "Tüm Oteller"
+    if hotel_id is not None:
+        hotel = db.query(models.Hotel).filter(models.Hotel.id == hotel_id).first()
+        if hotel:
+            hotel_name = hotel.name
+
+    return generate_hotel_summary(reviews, hotel_name)
+
+
 @router.get("/model-metrics")
 def get_model_metrics():
     metrics_path = "app/ml_models/metrics.json"
@@ -325,3 +348,16 @@ def get_model_metrics():
         return metrics
     except Exception as e:
         return {"error": "metrics.json okunamadı", "details": str(e)}
+
+
+@router.get("/sources")
+def get_available_sources():
+    """
+    Kayıtlı veri kaynaklarını ve meta bilgilerini döndürür.
+    SourceSelector servisinden okunur; yeni kaynak eklemek için
+    sadece source_selector.py → SOURCE_REGISTRY güncellenir.
+    """
+    return {
+        "available": SourceSelector.get_available_sources(),
+        "all":       SourceSelector.get_all_sources(),
+    }

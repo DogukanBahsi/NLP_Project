@@ -1,422 +1,388 @@
-# 🏨 HotelReviewAI  
+# 🏨 HotelReviewAI
 ### Yapay Zekâ Destekli Otel Yorum Analiz Platformu
 
 <p align="center">
-  <img src="https://github.com/DogukanBahsi/NLP_Project/blob/main/Logo.png" width="250"/>
+  <img src="https://github.com/DogukanBahsi/NLP_Project/blob/main/Logo.png" width="220"/>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python"/>
-  <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react"/>
-  <img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi"/>
-  <img src="https://img.shields.io/badge/NLP-AI%20Powered-purple?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/FastAPI-0.136-009688?style=for-the-badge&logo=fastapi"/>
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react"/>
+  <img src="https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite"/>
+  <img src="https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite"/>
+  <img src="https://img.shields.io/badge/NLP-AI%20Powered-8B5CF6?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge"/>
 </p>
 
 ---
 
-# 📌 Proje Hakkında
+## 📌 Proje Hakkında
 
-**HotelReviewAI**, otel müşteri yorumlarını Doğal Dil İşleme (NLP) teknikleri kullanarak analiz eden yapay zekâ destekli bir analiz platformudur.  
-Sistem, müşteri yorumlarını otomatik olarak analiz eder, müşteri memnuniyetini ölçer ve otel yönetimleri için veriye dayalı içgörüler sunar.
+**HotelReviewAI**, otel müşteri yorumlarını Doğal Dil İşleme (NLP) teknikleri kullanarak otomatik olarak analiz eden, tam yığın (full-stack) bir yapay zekâ platformudur.  
+Yüzlerce yorumu manuel okumak yerine otel yönetimleri, müşteri memnuniyet trendlerini, risk skorlarını ve aksiyon planlarını anlık olarak görüntüleyebilir.
 
-Yüzlerce yorumu manuel olarak okumak yerine işletmeler:
-- müşteri memnuniyet trendlerini,
-- hizmet kalitesini,
-- güçlü ve zayıf yönlerini
-
-anlık olarak analiz edebilir.
+> **Akademik proje** — İstanbul Gedik Üniversitesi, Doğal Dil İşleme Dersi, Bahar Dönemi
 
 ---
 
-# 🎯 Proje Amacı
+## 🎯 Temel Özellikler
 
-- Otel yorum analiz süreçlerini otomatikleştirmek
-- Manuel yorum inceleme yükünü azaltmak
-- Müşteri memnuniyet trendlerini tespit etmek
-- Hizmet kalitesini veriye dayalı olarak geliştirmek
-- Gerçek zamanlı duygu analizi sağlamak
-
----
-
-# 👥 Hedef Kitle
-
-- Otel Yöneticileri
-- Müşteri Hizmetleri Departmanları
-- Turizm Sektörü Analistleri
-- Konaklama İşletmeleri
-- NLP / Yapay Zekâ Araştırmacıları
+| Özellik | Açıklama |
+|---|---|
+| 🧠 **Duygu Analizi** | TF-IDF + Logistic Regression ile pozitif / negatif / nötr sınıflandırma |
+| 🤖 **BERT Destekli Analiz** | HuggingFace Transformers ile derin anlam çıkarımı (arka planda çalışır) |
+| 📊 **Çok Sekmeli Dashboard** | Genel Özet · Otel Karşılaştırma · Derinlemesine Analiz |
+| 🔍 **Kaynak Çokluluğu** | Google Maps (SerpAPI), CSV yükle, manuel giriş |
+| 📈 **Trend Grafiği** | Aylık / haftalık / günlük pozitif-negatif-nötr + ortalama skor |
+| ⚠️ **Risk Skoru** | Yorum başına hesaplanan itibar riski ve öncelikli aksiyon önerileri |
+| 📄 **PDF Raporu** | Tek tıkla tam analiz raporu dışa aktarma |
+| 🗂️ **Kategori Analizi** | Temizlik · Oda · Yemek · Resepsiyon · Wi-Fi · Fiyat kategorileri |
+| 💡 **NLP AI Özeti** | Harici API gerektirmeyen istatistiksel özetleyici (3 maddelik analiz) |
+| 🔄 **Otel Karşılaştırma** | İki oteli yan yana puan ve duygu dağılımıyla karşılaştır |
 
 ---
 
-# ✨ Özellikler
+## 🖼️ Ekran Görüntüleri
 
-## 🧠 NLP Duygu Analizi
-- Yorumların otomatik olumlu/olumsuz sınıflandırılması
-- Yapay zekâ destekli yorum analizi
-- Türkçe ve İngilizce dil desteği optimizasyonu
+### Ana Dashboard
+![Dashboard](https://github.com/DogukanBahsi/NLP_Project/blob/main/Dashboard.png)
 
-## 📊 Kategori Bazlı Analiz
-Yorumları aşağıdaki kategorilere göre analiz eder:
-- Temizlik
-- Yemek Kalitesi
-- Personel Hizmeti
-- Oda Konforu
-- Lokasyon
+### Model Doğruluğu
+![Model Accuracy](https://github.com/DogukanBahsi/NLP_Project/blob/main/Do%C4%9Fruluk.png)
 
-## 📈 İnteraktif Dashboard
-- Gerçek zamanlı grafikler
-- Genel otel performans analizi
-- Duygu dağılım grafikleri
-- Trend görselleştirmeleri
+### En Riskli Yorumlar
+![High Risk Reviews](https://github.com/DogukanBahsi/NLP_Project/blob/main/En%20Riskli%20Yorumlar.png)
 
-## 📄 Raporlama Sistemi
-Analiz sonuçlarını:
-- PDF
+### Tüm Yorumlar Tablosu
+![All Reviews](https://github.com/DogukanBahsi/NLP_Project/blob/main/T%C3%BCm%20Yorumlar.png)
 
-formatlarında dışa aktarabilir.
-
-## 🔌 REST API Desteği
-- Özel geliştirilmiş RESTful API mimarisi
-- Swagger/OpenAPI dokümantasyonu
-- Kolay frontend-backend entegrasyonu
+### Veri Kaynağı Analizi
+![Source Analysis](https://github.com/DogukanBahsi/NLP_Project/blob/main/Veri%20Kayna%C4%9F%C4%B1%20ve%20Yorumlar.png)
 
 ---
 
-# 🛠️ Kullanılan Teknolojiler
+## 🛠️ Kullanılan Teknolojiler
 
-## Frontend
-- React.js / Next.js
-- TailwindCSS [KULLANILIYORSA]
-- Axios
-- Chart.js / Plotly
+### Backend
+| Teknoloji | Versiyon | Açıklama |
+|---|---|---|
+| **FastAPI** | 0.136 | Ana REST API çerçevesi |
+| **SQLAlchemy** | 2.0 | ORM + veritabanı sorguları |
+| **SQLite** | — | Hafif yerel veritabanı |
+| **PyTorch** | 2.11 | BERT model çalıştırma |
+| **HuggingFace Transformers** | 5.7 | BERT sentiment pipeline |
+| **Scikit-learn** | 1.8 | TF-IDF + Logistic Regression |
+| **ReportLab** | — | PDF rapor üretimi |
+| **SerpAPI** | — | Google Maps yorum çekimi |
+| **Uvicorn** | — | ASGI sunucu |
 
-## Backend
-- FastAPI / Flask
-- Python 3.11+
-
-## Veritabanı
-- SQLite / PostgreSQL
-
-## Yapay Zekâ & NLP
-- PyTorch
-- HuggingFace Transformers
-- SpaCy
-- Scikit-learn
-
-## Veri İşleme
-- Pandas
-- NumPy
-
-## Görselleştirme
-- Matplotlib
-- Plotly
+### Frontend
+| Teknoloji | Versiyon | Açıklama |
+|---|---|---|
+| **React** | 18 | UI kütüphanesi |
+| **Vite** | 5 | Geliştirme ve build aracı |
+| **Recharts** | — | ComposedChart, BarChart, RadarChart |
+| **Axios** | — | HTTP istemcisi |
+| **Inline CSS** | — | CSS custom properties + glassmorphism tema |
 
 ---
 
-# 🧩 Sistem Mimarisi
-
-```text
-Ham Yorumlar
-      ↓
-Ön İşleme & Temizleme
-      ↓
-NLP Duygu Analizi Modeli
-      ↓
-Sınıflandırma & Skorlama
-      ↓
-Veritabanı Kaydı
-      ↓
-Dashboard Görselleştirme
-```
-
----
-
-# 📂 Proje Yapısı
+## 📂 Proje Yapısı
 
 ```plaintext
 HotelReviewAI/
-├── backend/                 # Backend API ve NLP Pipeline
-│   ├── app/                 # Ana uygulama kaynak kodları
-│   ├── data/                # Dataset ve ham veriler
-│   ├── models/              # Eğitilmiş AI/NLP modelleri
-│   ├── routes/              # API endpointleri
-│   ├── services/            # İş mantığı servisleri
+│
+├── backend/
+│   ├── app/
+│   │   ├── main.py                    # FastAPI uygulama giriş noktası
+│   │   ├── database.py                # SQLAlchemy oturum & engine
+│   │   ├── models.py                  # Hotel, Review ORM modelleri
+│   │   ├── schemas.py                 # Pydantic şemaları
+│   │   │
+│   │   ├── nlp/
+│   │   │   ├── analyzer.py            # Ana NLP analiz pipeline
+│   │   │   ├── bert_analyzer.py       # BERT Singleton (HuggingFace)
+│   │   │   ├── category_detector.py   # Kural tabanlı kategori tespiti
+│   │   │   ├── action_planner.py      # Aksiyon planı üreticisi
+│   │   │   ├── summarizer.py          # Extractive NLP özetleyici
+│   │   │   └── train_model.py         # Model eğitim scripti
+│   │   │
+│   │   ├── ml_models/
+│   │   │   ├── sentiment_model.pkl    # Eğitilmiş Logistic Regression
+│   │   │   ├── tfidf_vectorizer.pkl   # TF-IDF vektörizer
+│   │   │   └── metrics.json           # Model performans metrikleri
+│   │   │
+│   │   ├── routers/
+│   │   │   ├── dashboard_routes.py    # Dashboard ve analiz endpointleri
+│   │   │   ├── review_routes.py       # Yorum CRUD + CSV yükleme
+│   │   │   ├── hotel_routes.py        # Otel CRUD
+│   │   │   ├── analysis_routes.py     # Tekil yorum analizi
+│   │   │   ├── external_sources_routes.py  # SerpAPI entegrasyonu
+│   │   │   └── report_routes.py       # PDF rapor üretimi
+│   │   │
+│   │   └── services/
+│   │       └── serpapi_service.py     # SerpAPI veri çekme servisi
+│   │
 │   └── requirements.txt
 │
-├── frontend/                # React / Next.js arayüzü
-│   ├── components/
-│   ├── pages/
-│   ├── public/
+├── frontend/
+│   ├── src/
+│   │   ├── main.jsx                   # React giriş noktası
+│   │   ├── App.jsx                    # Kök bileşen
+│   │   ├── Dashboard.jsx              # Ana dashboard (~1100 satır)
+│   │   ├── api.js                     # API istemci fonksiyonları
+│   │   └── index.css                  # Global CSS + animasyonlar
+│   │
+│   ├── index.html
 │   └── package.json
 │
-├── docs/                    # UML diyagramları ve raporlar
-├── screenshots/             # Proje ekran görüntüleri
-├── README.md
-└── .gitignore
+├── Dashboard.png                      # Ekran görüntüsü
+├── Doğruluk.png                       # Model metrik ekranı
+├── En Riskli Yorumlar.png             # Risk tablosu ekranı
+├── Tüm Yorumlar.png                   # Yorumlar tablosu ekranı
+├── Veri Kaynağı ve Yorumlar.png       # Kaynak analizi ekranı
+├── Logo.png
+├── baslat.bat                         # Tek tıkla başlatma scripti
+├── main.py                            # Alternatif giriş noktası
+└── README.md
 ```
 
 ---
 
-# ⚙️ Kurulum
+## ⚙️ Kurulum ve Çalıştırma
 
-## 1️⃣ Repoyu Klonlayın
+### Ön Gereksinimler
 
-```bash
-git clone https://github.com/DogukanBahsi/NLP_Project.git
-cd HotelReviewAI
-```
+- Python 3.11+
+- Node.js 18+
+- pip
 
 ---
 
-## 2️⃣ Backend Kurulumu
+### Yöntem 1 — Tek Tıkla Başlatma (Önerilen)
 
+Proje kök dizinindeki `baslat.bat` dosyasına çift tıklayın.
+
+Bu script otomatik olarak:
+1. `backend/` klasöründe `uvicorn app.main:app --reload --port 8000` başlatır
+2. `frontend/` klasöründe `npm run dev` başlatır
+3. Tarayıcıda `http://localhost:5173` adresini açar
+
+---
+
+### Yöntem 2 — Manuel Kurulum
+
+**Backend:**
 ```bash
 cd backend
-
 pip install -r requirements.txt
-
-# .env dosyası oluşturun
-touch .env
-
-# FastAPI sunucusunu başlatın
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8000
 ```
 
-Backend adresi:
-
-```txt
-http://localhost:8000
-```
-
-Swagger API Dokümantasyonu:
-
-```txt
-http://localhost:8000/docs
-```
-
----
-
-## 3️⃣ Frontend Kurulumu
-
+**Frontend:**
 ```bash
 cd frontend
-
 npm install
-
 npm run dev
 ```
 
-Frontend adresi:
-
-```txt
-http://localhost:3000
-```
-
----
-
-# 🚀 Kullanım
-
-## Adım 1 — Uygulamayı Başlatın
-Backend ve frontend sunucularını çalıştırın.
-
-## Adım 2 — Otel Arama
-Arama kısmında istediğiniz oteli aratın.
-
-## Adım 3 — Otomatik NLP İşleme
-Sistem otomatik olarak:
-- metni temizler,
-- yorumları işler,
-- duygu analizi yapar,
-- kategori skorlarını üretir.
-
-## Adım 4 — Görsel Analizleri İnceleyin
-Dashboard üzerinden:
-- duygu grafikleri,
-- müşteri memnuniyet skorları,
-- trend analizleri,
-- özet raporlar
-
-görüntülenebilir.
+| Servis | Adres |
+|---|---|
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:8000 |
+| Swagger Docs | http://localhost:8000/docs |
 
 ---
 
-# 📊 Örnek Analiz Çıktıları
+## 🔌 API Endpoint Tablosu
 
-- Olumlu / Olumsuz Yorum Oranı
-- Müşteri Memnuniyet Skoru
-- En Çok Şikâyet Edilen Konular
-- Hizmet Kalitesi Isı Haritası
-- Kategori Bazlı Skorlar
-
----
-
-# 🧪 API Dokümantasyonu
-
-Swagger dokümantasyonuna aşağıdaki adresten erişebilirsiniz:
-
-```txt
-http://localhost:8000/docs
-```
-
-Örnek API Endpointleri:
-
+### Dashboard
 | Method | Endpoint | Açıklama |
 |---|---|---|
-| POST | `/analyze` | Yüklenen yorumları analiz eder |
-| GET | `/reports` | Oluşturulan raporları getirir |
-| GET | `/dashboard` | Dashboard istatistiklerini döndürür |
+| GET | `/dashboard/summary` | KPI özeti, duygu dağılımı, risk yorumları |
+| GET | `/dashboard/summary?hotel_id={id}` | Belirli otel özeti |
+| GET | `/dashboard/trend` | Zaman serisi trend verisi |
+| GET | `/dashboard/reviews` | Sayfalanmış yorum tablosu |
+| GET | `/dashboard/nlp-summary` | AI destekli 3 maddelik extractive özet |
+| GET | `/dashboard/model-metrics` | Model doğruluk ve F1 metrikleri |
+| DELETE | `/dashboard/hotel/{id}` | Otel ve tüm yorumlarını sil |
+
+### Yorumlar
+| Method | Endpoint | Açıklama |
+|---|---|---|
+| GET | `/reviews/` | Tüm yorumları listele |
+| POST | `/reviews/` | Manuel yorum ekle + otomatik NLP analizi |
+| POST | `/reviews/upload-csv?hotel_id={id}` | Standart CSV yükleme |
+| POST | `/reviews/upload-multi-source-csv?hotel_id={id}` | Çok kaynaklı CSV (source sütunlu) |
+
+### Oteller
+| Method | Endpoint | Açıklama |
+|---|---|---|
+| GET | `/hotels/` | Tüm otelleri listele |
+| POST | `/hotels/` | Yeni otel oluştur |
+
+### Harici Kaynaklar (SerpAPI)
+| Method | Endpoint | Açıklama |
+|---|---|---|
+| GET | `/external/serpapi/search-hotels?query={q}` | Google Maps'te otel arama |
+| POST | `/external/serpapi/import-reviews` | Google yorumlarını içe aktar |
+
+### Raporlar
+| Method | Endpoint | Açıklama |
+|---|---|---|
+| GET | `/reports/pdf` | PDF raporu oluştur ve indir |
+
+### Sistem
+| Method | Endpoint | Açıklama |
+|---|---|---|
+| GET | `/health` | BERT model hazırlık durumu |
 
 ---
 
-# 🖼️ Ekran Görüntüleri
+## 🤖 Model Metrikleri
 
-## Dashboard
-![Dashboard Screenshot](https://github.com/DogukanBahsi/NLP_Project/blob/main/Dashboard.png)
+> Model: **TF-IDF Vektörizasyon + Logistic Regression**  
+> Eğitim verisi: Türkçe/İngilizce otel yorumları
 
+| Metrik | Değer |
+|---|---|
+| **Accuracy** | **0.667** |
+| **F1 Score (Weighted)** | **0.656** |
+| Sınıflar | pozitif · negatif · nötr |
+| Vektörizasyon | TF-IDF (n-gram: 1-2) |
+| Model dosyası | `sentiment_model.pkl` |
 
-## Analitik Sayfası
-![Analytics Screenshot](https://github.com/DogukanBahsi/NLP_Project/blob/main/Veri%20Kayna%C4%9F%C4%B1%20ve%20Yorumlar.png)
+### NLP Pipeline Akışı
+
+```text
+Ham Yorum Metni
+      ↓
+Metin Temizleme (lowercase, noktalama kaldırma)
+      ↓
+TF-IDF Vektörizasyon (tfidf_vectorizer.pkl)
+      ↓
+Logistic Regression Sınıflandırma (sentiment_model.pkl)
+      ↓
+Duygu Etiketi: pozitif / negatif / nötr
+      ↓
+Risk Skoru Hesaplama (negatif yoğunluğu × ağırlık)
+      ↓
+Kategori Tespiti (kural tabanlı: temizlik, oda, yemek...)
+      ↓
+Aksiyon Planı Üretimi
+      ↓
+Veritabanına Kayıt (SQLite)
+```
 
 ---
 
-# 🔒 Kısıtlamalar
+## 📊 Dashboard Sekmeleri
 
-- NLP modeli temel olarak:
-  - Türkçe
-  - İngilizce
+### 🗂️ Genel Özet
+- KPI kartları (toplam yorum, ortalama skor, pozitif/negatif oran, risk sayısı)
+- Duygu dağılımı pasta grafiği + kategori çubuk grafiği
+- Zaman serisi trend (ComposedChart: çubuk + çizgi, çift Y ekseni)
+- Kaynak analizi (Google Maps / CSV / Manual karşılaştırması)
+- En riskli 5 yorum listesi
+- Haftalık aksiyon planı ve öncelikli iyileştirme önerileri
+- Tüm yorumlar tablosu (arama, filtre, sayfalama + Drawer detay paneli)
 
-yorumlar için optimize edilmiştir.
+### 🔄 Otel Karşılaştırma
+- İki otel seçimi ile yan yana performans analizi
+- Ortalama skor, duygu dağılımı, kategori karşılaştırması
+- Kazanan oteli belirleyen otomatik karar
 
-Aşağıdaki durumlarda performans düşebilir:
-- Argo ağırlıklı yorumlar
-- Karışık dil kullanımı
-- İronik / alaycı ifadeler
+### 🔬 Derinlemesine Analiz
+- AI destekli NLP özet (3 maddelik extractive analiz)
+- Top şikayet & top övgü kategorisi
+- Yüksek riskli yorum detay kartları
 
 ---
 
-# 🎓 Akademik Bilgiler
+## 🚀 Kullanım Kılavuzu
+
+1. **Uygulamayı başlatın** — `baslat.bat` veya manuel kurulum
+2. **Otel aratın** — Üst arama çubuğunda otel adı yazın (Google Maps'ten otomatik çekilir)
+3. **Yorumları içe aktarın** — "İçe Aktar" butonuyla Google yorumlarını yükleyin **veya** CSV dosyası yükleyin
+4. **Dashboard'u inceleyin** — KPI, trend, kaynak analizi ve risk yorumlarını görüntüleyin
+5. **Derinlemesine analiz** — "Derinlemesine Analiz" sekmesinde AI özeti alın
+6. **Raporlayın** — PDF butonu ile tam raporu dışa aktarın
+
+---
+
+## 🎨 Teknik Mimari Özellikleri (Golden Master)
+
+- **SQL Aggregate Optimizasyonu** — Python döngüsü yerine tek sorguda `func.count/avg/sum + case()`
+- **N+1 Sorgu Düzeltmesi** — `joinedload(Review.hotel)` ile ilişkisel veri tek sorguda
+- **UUID PDF Dosyaları** — Race condition önleme + `BackgroundTasks` ile otomatik temizlik
+- **COALESCE Zaman Filtresi** — `review_date` yoksa `created_at` devreye girer
+- **asyncio Python 3.12** — `get_running_loop()` ile uyumlu başlatma
+- **ErrorBoundary** — React bileşen çökmelerini yakalayan sınıf bileşeni
+- **Click-Outside Dropdown** — `useRef` + `document.mousedown` ile kapanma
+- **Glassmorphism UI** — `#0f172a / #1e293b` koyu tema + neon glow efektleri
+
+---
+
+## 📋 requirements.txt (Özet)
+
+```text
+fastapi==0.136.1
+uvicorn
+sqlalchemy==2.0.49
+torch==2.11.0
+transformers==5.7.0
+scikit-learn==1.8.0
+reportlab
+serpapi
+pandas
+python-multipart
+```
+
+---
+
+## 🧪 Test
+
+```bash
+# Backend birim testleri
+cd backend
+python test_nlp.py
+python test_import.py
+
+# Swagger UI üzerinden manuel test
+# http://localhost:8000/docs
+```
+
+---
+
+## 🎓 Akademik Bilgiler
 
 | Alan | Bilgi |
 |---|---|
-| Ders | Doğal Dil İşleme |
-| Üniversite | İstanbul Gedik Üniversitesi |
-| Proje Türü | Akademik AI/NLP Projesi |
-| Dönem | Bahar Dönemi |
-| Danışman / Hoca | Başak Buluz Kömeçoğlu |
+| **Ders** | Doğal Dil İşleme (NLP) |
+| **Üniversite** | İstanbul Gedik Üniversitesi |
+| **Proje Türü** | Akademik Bitirme Projesi |
+| **Dönem** | 2024–2025 Bahar Dönemi |
+| **Danışman** | Başak Buluz Kömeçoğlu |
 
 ---
 
-# 👨‍💻 Katkıda Bulunanlar
+## 👨‍💻 Katkıda Bulunanlar
 
 | İsim | Rol |
 |---|---|
-| Ramazan Doğukan Bahşi | Full Stack & NLP Geliştirme |
-| Yasin Almaz | Veri Mühendisliği & Backend |
-| Berat Demirbaş | Frontend & UI/UX |
+| **Ramazan Doğukan Bahşi** | Full Stack Geliştirme · NLP Pipeline · Backend Mimarisi |
+| **Yasin Almaz** | Veri Mühendisliği · Model Eğitimi · Backend |
+| **Berat Demirbaş** | Frontend · UI/UX · Dashboard Tasarımı |
 
 ---
 
-# 📈 Model & NLP Detayları
+## 📬 İletişim
 
-## NLP Pipeline İçeriği
-- Metin Temizleme
-- Tokenization
-- Stopword Removal
-- Lemmatization
-- Embedding Üretimi
-- Duygu Sınıflandırması
-
-## Model Bilgileri
-
-| Bileşen | Teknoloji |
-|---|---|
-| Transformer Modeli | Scikit-Learn |
-| Embedding Yöntemi | TF-IDF Vectorization |
-| Sınıflandırma Algoritması | Machine Learning Classifier |
-
----
-
-# 🧠 Yapay Zekâ İş Akışı
-
-```text
-Kullanıcı Yorumları Yükler
-        ↓
-Metin Ön İşleme
-        ↓
-Transformer Tabanlı NLP Modeli
-        ↓
-Duygu Tahmini
-        ↓
-Veri Toplama & Analiz
-        ↓
-Dashboard Görselleştirme
-```
-
----
-
-# 📋 Gereksinimler
-
-## Backend
-- Python 3.11+
-- pip
-
-## Frontend
-- Node.js v18+
-- npm / yarn
-
----
-
-# 📦 Deployment
-
-## Production Build
-
-### Frontend
-```bash
-npm run build
-```
-
-### Backend
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
-
----
-
-# 📚 Genişletilebilir Araştırma Alanları
-
-- Emotion Detection
-- Fake Review Detection
-- Aspect-Based Sentiment Analysis
-- Recommendation Systems
-- Customer Retention Prediction
-
----
-
-# ⭐ Teşekkürler
-
-Özel teşekkürler:
-- HuggingFace
-- SpaCy
-- FastAPI
-- React Community
-- Açık Kaynak NLP Ekosistemi
-
----
-
-# 📬 İletişim
-
-## Geliştiriciler
-
-**Ramazan Doğukan Bahşi**
-
-**Yasin Almaz**
-
-**Berat Demirbaş**
-
-- GitHub: [https://github.com/DogukanBahsi]
-- LinkedIn: [https://www.linkedin.com/in/dogukanbhs/]
-- E-posta: [dgkn.bhsi@gmail.com]
+**Ramazan Doğukan Bahşi**  
+- GitHub: [github.com/DogukanBahsi](https://github.com/DogukanBahsi)
+- LinkedIn: [linkedin.com/in/dogukanbhs](https://www.linkedin.com/in/dogukanbhs/)
+- E-posta: dgkn.bhsi@gmail.com
 
 ---
 
