@@ -1,4 +1,10 @@
 import asyncio
+import asyncio
+from dotenv import load_dotenv  
+import os                      
+from contextlib import asynccontextmanager
+
+load_dotenv() 
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -13,6 +19,7 @@ from app.routers import (
     analysis_routes,
     report_routes,
     external_sources_routes,
+    external_ratings_routes,
 )
 
 
@@ -55,6 +62,7 @@ app.include_router(dashboard_routes.router)
 app.include_router(analysis_routes.router)
 app.include_router(report_routes.router)
 app.include_router(external_sources_routes.router)
+app.include_router(external_ratings_routes.router)
 
 
 @app.get("/")

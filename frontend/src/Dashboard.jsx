@@ -11,6 +11,8 @@ import {
   getTrendData, getReviewsTable, getModelMetrics,
   deleteHotel, getNlpSummary, uploadMultiSourceCsv,
   getAvailableSources,
+  getExternalRatings, upsertExternalRating, deleteExternalRating, getPlatformList,
+  autoFetchPlatformRatings,
 } from "./api";
 
 // ─── SVG Icons ──────────────────────────────────────────────────────────────
@@ -132,6 +134,13 @@ export default function Dashboard() {
   const [trendData, setTrendData]     = useState([]);
   const [trendGroupBy, setTrendGroupBy] = useState("monthly");
 
+  // Dış Platform Puanları
+  const [extRatings, setExtRatings]         = useState([]);
+  const [platformList, setPlatformList]     = useState([]);
+  const [extModal, setExtModal]             = useState(null); // null | "add" | {edit: rowObj}
+  const [extForm, setExtForm]               = useState({platform:"", rating:"", review_count:"", url:""});
+  const [extFetching, setExtFetching]       = useState(false);
+
   // Reviews table
   const [reviewsData, setReviewsData]               = useState({total:0,page:1,page_size:15,total_pages:1,items:[]});
   const [reviewSearchInput, setReviewSearchInput]   = useState("");
@@ -166,12 +175,20 @@ export default function Dashboard() {
       const d = await getDashboardSummary(hotelId);
       setData(d);
     } catch (err) { console.error("Dashboard hatası:", err); }
+    loadExtRatings(hotelId);
+  };
+
+  const loadExtRatings = async (hotelId) => {
+    if (!hotelId) { setExtRatings([]); return; }
+    try { setExtRatings(await getExternalRatings(hotelId)); } catch {}
   };
 
   const loadTrendData = async (hotelId, groupBy, timeRangeKey) => {
     const map = {all:"all",weekly:"last_week",monthly:"last_month",yearly:"last_year"};
+    // Günlük mod → her zaman son 1 ay (30 gün); "all" seçilse bile too many points olur
+    const effectiveRange = groupBy === "daily" ? "last_month" : (map[timeRangeKey] || "all");
     try {
-      const r = await getTrendData(hotelId, groupBy, map[timeRangeKey]||"all");
+      const r = await getTrendData(hotelId, groupBy, effectiveRange);
       setTrendData(r);
     } catch (err) { console.error("Trend hatası:", err); }
   };
@@ -205,6 +222,8 @@ export default function Dashboard() {
         if (srcs.length > 0) setAvailableSources(srcs);
       })
       .catch(() => {}); // fallback → varsayılan liste korunur
+    // Dış platform metadata listesi
+    getPlatformList().then(setPlatformList).catch(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -270,10 +289,27 @@ export default function Dashboard() {
     finally { setIsSearching(false); }
   };
 
+  /** data_id eksik veya "null" string olan sonuçlar organik web sonucudur — yorum çekilemez */
+  const isOrganicResult = (hotel) => {
+    const id = hotel?.data_id;
+    return !id || ["null", "None", "none", "undefined", ""].includes(String(id).trim());
+  };
+
   const handleImportReviews = async (hotel) => {
+    // Organik sonuçlar için import engelle
+    if (isOrganicResult(hotel)) {
+      alert(
+        "Bu sonuç bir web sayfasıdır, Google Maps kaydı değil.\n\n" +
+        "Yorum çekilebilmesi için listede ⭐ puanı ve yorum sayısı görünen bir otel seçin."
+      );
+      return;
+    }
     setShowDropdown(false); setLoadingImport(true);
     try {
-      const r = await importReviews(hotel.title, hotel.data_id, hotel.rating);
+      const r = await importReviews(
+        hotel.title, hotel.data_id, hotel.rating,
+        hotel.latitude, hotel.longitude, hotel.place_id, hotel.address
+      );
       alert(r.message);
       await loadDashboard(r.hotel_id || null);
     } catch { alert("Yorumlar çekilirken hata oluştu."); }
@@ -327,8 +363,8 @@ export default function Dashboard() {
     normal: {label:"NORMAL", bg:"rgba(59,130,246,0.12)", border:"#3B82F6",color:"#60A5FA",dot:"#3B82F6"},
   };
 
-  const processedTrendData = trendData.map(d=>({...d,avg_score:d.avg_score>0?d.avg_score:null}));
-  const validScores = trendData.filter(d=>d.avg_score>0);
+  const processedTrendData = trendData.map(d=>({...d, avg_score: d.avg_score != null && d.avg_score > 0 ? d.avg_score : null}));
+  const validScores = trendData.filter(d=>d.avg_score != null && d.avg_score > 0);
   const avgTrend = validScores.length>0
     ? (validScores.reduce((s,d)=>s+d.avg_score,0)/validScores.length).toFixed(2)
     : "—";
@@ -473,15 +509,45 @@ export default function Dashboard() {
               {showDropdown && (
                 <div className="search-results">
                   {isSearching ? <div style={{padding:16,textAlign:"center",color:"var(--text-muted)"}}>Aranıyor...</div>
-                  : searchResults.length>0 ? searchResults.map((hotel,i)=>(
-                    <div key={i} className="search-result-item" onClick={()=>handleImportReviews(hotel)}>
-                      <div>
-                        <div style={{fontWeight:600,color:"var(--text-primary)",marginBottom:4}}>{hotel.title}</div>
-                        <div style={{fontSize:"0.85rem",color:"var(--text-muted)"}}>⭐ {hotel.rating||"-"} | {hotel.reviews||0} yorum</div>
+                  : searchResults.length>0 ? searchResults.map((hotel,i)=>{
+                    const organic = isOrganicResult(hotel);
+                    return (
+                      <div key={i} className="search-result-item"
+                        style={{opacity: organic ? 0.65 : 1, cursor: organic ? "default" : "pointer"}}
+                        onClick={()=>!organic && handleImportReviews(hotel)}>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontWeight:600,color:"var(--text-primary)",marginBottom:4,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+                            <span style={{wordBreak:"break-word"}}>{hotel.title}</span>
+                            {organic && (
+                              <span style={{
+                                fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.03em",
+                                background:"rgba(239,68,68,0.15)",color:"#f87171",
+                                border:"1px solid rgba(239,68,68,0.3)",borderRadius:4,
+                                padding:"1px 6px",flexShrink:0,whiteSpace:"nowrap"
+                              }}>WEB SONUCU</span>
+                            )}
+                          </div>
+                          <div style={{fontSize:"0.82rem",color:"var(--text-muted)"}}>
+                            {organic
+                              ? <span style={{color:"#f87171"}}>⚠ Yorum çekilemiyor — Google Maps kaydı yok</span>
+                              : <>⭐ {hotel.rating||"-"} | {(hotel.reviews||0).toLocaleString()} yorum</>
+                            }
+                          </div>
+                        </div>
+                        <button
+                          className={organic ? "btn" : "btn btn-secondary"}
+                          disabled={organic}
+                          style={{
+                            padding:"6px 14px",fontSize:"0.82rem",flexShrink:0,
+                            opacity: organic ? 0.4 : 1,
+                            cursor: organic ? "not-allowed" : "pointer",
+                          }}
+                          onClick={e=>{e.stopPropagation(); !organic && handleImportReviews(hotel);}}>
+                          {organic ? "—" : "İçe Aktar"}
+                        </button>
                       </div>
-                      <button className="btn btn-secondary" style={{padding:"6px 12px",fontSize:"0.85rem"}}>İçe Aktar</button>
-                    </div>
-                  )) : <div style={{padding:16,textAlign:"center",color:"var(--text-muted)"}}>Sonuç bulunamadı.</div>}
+                    );
+                  }) : <div style={{padding:16,textAlign:"center",color:"var(--text-muted)"}}>Sonuç bulunamadı.</div>}
                 </div>
               )}
             </div>
@@ -614,6 +680,219 @@ export default function Dashboard() {
             </button>
           </div>
 
+          {/* ── Dış Platform Puanları + Harita ─────────────────────────── */}
+          {currentHotelId && (
+            <div className="chart-card glass-panel" style={{gridColumn:"1/-1"}}>
+
+              {/* Başlık satırı */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,flexWrap:"wrap",gap:8}}>
+                <h3 className="chart-title" style={{margin:0}}>Dış Platform Puanları</h3>
+                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                  <button className="btn btn-secondary"
+                    style={{padding:"6px 14px",fontSize:"0.82rem",display:"flex",alignItems:"center",gap:6,opacity:extFetching?0.6:1}}
+                    disabled={extFetching}
+                    onClick={async()=>{
+                      setExtFetching(true);
+                      try {
+                        const r = await autoFetchPlatformRatings(currentHotelId);
+                        setExtRatings(r.ratings || []);
+                        if (r.saved_count === 0) alert("Bu otel için platform puanı bulunamadı. Manuel ekleyebilirsiniz.");
+                      } catch { alert("Otomatik getirme başarısız."); }
+                      finally { setExtFetching(false); }
+                    }}>
+                    {extFetching
+                      ? <><span style={{display:"inline-block",width:12,height:12,border:"2px solid rgba(255,255,255,0.3)",borderTop:"2px solid white",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/> Aranıyor...</>
+                      : <><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{marginRight:2}}><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Otomatik Getir</>
+                    }
+                  </button>
+                  <button className="btn btn-secondary" style={{padding:"6px 14px",fontSize:"0.82rem",display:"flex",alignItems:"center",gap:5}}
+                    onClick={()=>{setExtForm({platform:"",rating:"",review_count:"",url:""});setExtModal("add");}}>
+                    <span style={{fontSize:"1.1rem",lineHeight:1}}>+</span> Manuel Ekle
+                  </button>
+                </div>
+              </div>
+
+              {/* İki sütun: kartlar | harita */}
+              <div style={{display:"flex",gap:20,flexWrap:"wrap",alignItems:"flex-start"}}>
+
+                {/* ── Platform kartları ── */}
+                <div style={{flex:"1 1 400px"}}>
+                  {extRatings.length === 0 ? (
+                    <div style={{textAlign:"center",color:"var(--text-muted)",padding:"28px 0",fontSize:"0.88rem",background:"rgba(255,255,255,0.02)",borderRadius:10,border:"1px dashed rgba(255,255,255,0.1)"}}>
+                      <div style={{fontSize:"1.8rem",marginBottom:8}}>🔍</div>
+                      Henüz platform puanı yok.<br/>
+                      <span style={{fontSize:"0.8rem",opacity:0.7}}>"Otomatik Getir"e tıklayarak TripAdvisor, Booking.com vb. puanları otomatik çekin.</span>
+                    </div>
+                  ) : (
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(170px,1fr))",gap:12}}>
+                      {extRatings.map(r => {
+                        const pct = r.rating != null ? Math.round((r.rating / r.max_rating) * 100) : 0;
+                        const barColor = pct >= 80 ? "#10B981" : pct >= 60 ? "#F59E0B" : "#EF4444";
+                        return (
+                          <div key={r.id} style={{
+                            background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",
+                            borderRadius:14,padding:"14px 16px",cursor:"pointer",transition:"all 0.2s",
+                          }}
+                          onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,255,255,0.07)";e.currentTarget.style.borderColor="rgba(255,255,255,0.2)";}}
+                          onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.04)";e.currentTarget.style.borderColor="rgba(255,255,255,0.08)";}}
+                          onClick={()=>{setExtForm({platform:r.platform,rating:r.rating??"",review_count:r.review_count??"",url:r.url??""});setExtModal({edit:r});}}>
+
+                            {/* Platform header */}
+                            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+                              <span style={{
+                                width:32,height:32,borderRadius:8,background:r.color,flexShrink:0,
+                                display:"flex",alignItems:"center",justifyContent:"center",
+                                fontSize:"0.72rem",fontWeight:900,color:"white",letterSpacing:"0.02em",
+                              }}>{r.icon}</span>
+                              <div style={{flex:1,minWidth:0}}>
+                                <div style={{fontWeight:700,fontSize:"0.82rem",color:"var(--text-primary)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.label}</div>
+                                {r.review_count != null && (
+                                  <div style={{fontSize:"0.72rem",color:"var(--text-muted)"}}>{r.review_count.toLocaleString("tr-TR")} yorum</div>
+                                )}
+                              </div>
+                              {r.url && (
+                                <a href={r.url} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()}
+                                  style={{color:"var(--text-muted)",flexShrink:0,lineHeight:0,opacity:0.7}}
+                                  onMouseEnter={e=>e.currentTarget.style.opacity="1"}
+                                  onMouseLeave={e=>e.currentTarget.style.opacity="0.7"}>
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </a>
+                              )}
+                            </div>
+
+                            {/* Büyük puan */}
+                            <div style={{display:"flex",alignItems:"baseline",gap:3,marginBottom:8}}>
+                              <span style={{fontSize:"2rem",fontWeight:900,color:"white",lineHeight:1,letterSpacing:"-0.02em"}}>
+                                {r.rating != null ? r.rating.toLocaleString("tr-TR",{minimumFractionDigits:1,maximumFractionDigits:1}) : "—"}
+                              </span>
+                              <span style={{fontSize:"0.82rem",color:"var(--text-muted)",fontWeight:500}}>
+                                /{r.max_rating % 1 === 0 ? r.max_rating.toFixed(0) : r.max_rating}
+                              </span>
+                            </div>
+
+                            {/* Puan çubuğu */}
+                            {r.rating != null && (
+                              <div style={{background:"rgba(255,255,255,0.08)",borderRadius:99,height:5,overflow:"hidden"}}>
+                                <div style={{width:`${pct}%`,height:"100%",background:barColor,borderRadius:99,transition:"width 0.6s ease"}}/>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* ── Harita ── */}
+                {data.selected_hotel?.latitude && data.selected_hotel?.longitude ? (
+                  <div style={{flex:"0 0 300px",minWidth:260}}>
+                    <div style={{
+                      borderRadius:14,overflow:"hidden",border:"1px solid rgba(255,255,255,0.1)",
+                      position:"relative",
+                    }}>
+                      {/* Google Maps embed (no API key needed for output=embed) */}
+                      <iframe
+                        title="Otel konumu"
+                        width="100%"
+                        height="220"
+                        style={{display:"block",border:0}}
+                        loading="lazy"
+                        src={`https://maps.google.com/maps?q=${data.selected_hotel.latitude},${data.selected_hotel.longitude}&z=15&output=embed`}
+                      />
+                      {/* Haritada aç butonu */}
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1${data.selected_hotel.place_id ? `&query_place_id=${data.selected_hotel.place_id}` : `&query=${data.selected_hotel.latitude},${data.selected_hotel.longitude}`}`}
+                        target="_blank" rel="noreferrer"
+                        style={{
+                          position:"absolute",bottom:8,right:8,
+                          background:"rgba(15,23,42,0.85)",backdropFilter:"blur(4px)",
+                          border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,
+                          padding:"5px 10px",fontSize:"0.75rem",color:"white",
+                          textDecoration:"none",display:"flex",alignItems:"center",gap:5,
+                          transition:"background 0.2s",
+                        }}
+                        onMouseEnter={e=>e.currentTarget.style.background="rgba(59,130,246,0.8)"}
+                        onMouseLeave={e=>e.currentTarget.style.background="rgba(15,23,42,0.85)"}>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Google Maps'te aç
+                      </a>
+                    </div>
+                    {/* Adres */}
+                    {data.selected_hotel.address && (
+                      <div style={{marginTop:8,fontSize:"0.75rem",color:"var(--text-muted)",lineHeight:1.4,padding:"0 2px"}}>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{marginRight:4,verticalAlign:"middle",flexShrink:0}}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        {data.selected_hotel.address}
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+              </div>
+
+              {/* ── Modal ── */}
+              {extModal && (
+                <div style={{
+                  position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",zIndex:9999,
+                  display:"flex",alignItems:"center",justifyContent:"center",padding:16,
+                }} onClick={()=>setExtModal(null)}>
+                  <div style={{
+                    background:"#1E293B",border:"1px solid rgba(255,255,255,0.12)",
+                    borderRadius:16,padding:28,width:"100%",maxWidth:420,
+                  }} onClick={e=>e.stopPropagation()}>
+                    <h3 style={{margin:"0 0 20px",color:"var(--text-primary)",fontSize:"1.05rem"}}>
+                      {extModal==="add" ? "Platform Puanı Ekle" : `Düzenle — ${extModal.edit?.label}`}
+                    </h3>
+                    {extModal==="add" && (
+                      <div style={{marginBottom:14}}>
+                        <label style={{fontSize:"0.78rem",color:"var(--text-muted)",fontWeight:600,display:"block",marginBottom:4}}>PLATFORM</label>
+                        <select value={extForm.platform} onChange={e=>setExtForm(p=>({...p,platform:e.target.value}))}
+                          style={{width:"100%",padding:"9px 12px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,color:"white",fontSize:"0.9rem",outline:"none"}}>
+                          <option value="" style={{background:"#1e293b"}}>— Seçin —</option>
+                          {platformList.filter(p=>!extRatings.some(r=>r.platform===p.key)).map(p=>(
+                            <option key={p.key} value={p.key} style={{background:"#1e293b"}}>{p.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                    <div style={{marginBottom:14}}>
+                      <label style={{fontSize:"0.78rem",color:"var(--text-muted)",fontWeight:600,display:"block",marginBottom:4}}>PUAN</label>
+                      <input type="number" min="0" max="10" step="0.1" value={extForm.rating}
+                        onChange={e=>setExtForm(p=>({...p,rating:e.target.value}))} placeholder="örn. 4.3"
+                        style={{width:"100%",padding:"9px 12px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,color:"white",fontSize:"0.9rem",outline:"none",boxSizing:"border-box"}}/>
+                    </div>
+                    <div style={{marginBottom:14}}>
+                      <label style={{fontSize:"0.78rem",color:"var(--text-muted)",fontWeight:600,display:"block",marginBottom:4}}>YORUM SAYISI</label>
+                      <input type="number" min="0" value={extForm.review_count}
+                        onChange={e=>setExtForm(p=>({...p,review_count:e.target.value}))} placeholder="örn. 599"
+                        style={{width:"100%",padding:"9px 12px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,color:"white",fontSize:"0.9rem",outline:"none",boxSizing:"border-box"}}/>
+                    </div>
+                    <div style={{marginBottom:22}}>
+                      <label style={{fontSize:"0.78rem",color:"var(--text-muted)",fontWeight:600,display:"block",marginBottom:4}}>PLATFORM URL (isteğe bağlı)</label>
+                      <input type="url" value={extForm.url}
+                        onChange={e=>setExtForm(p=>({...p,url:e.target.value}))} placeholder="https://www.tripadvisor.com/..."
+                        style={{width:"100%",padding:"9px 12px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,color:"white",fontSize:"0.9rem",outline:"none",boxSizing:"border-box"}}/>
+                    </div>
+                    <div style={{display:"flex",gap:10,justifyContent:"space-between"}}>
+                      {extModal!=="add" && (
+                        <button className="btn" style={{color:"#f87171",border:"1px solid rgba(248,113,113,0.3)",background:"rgba(239,68,68,0.1)",padding:"8px 16px",fontSize:"0.85rem"}}
+                          onClick={async()=>{await deleteExternalRating(currentHotelId,extModal.edit.platform);setExtModal(null);loadExtRatings(currentHotelId);}}>Sil</button>
+                      )}
+                      <div style={{display:"flex",gap:8,marginLeft:"auto"}}>
+                        <button className="btn btn-secondary" style={{padding:"8px 16px",fontSize:"0.85rem"}} onClick={()=>setExtModal(null)}>İptal</button>
+                        <button className="btn btn-primary" style={{padding:"8px 16px",fontSize:"0.85rem"}}
+                          onClick={async()=>{
+                            const pl = extModal==="add" ? extForm.platform : extModal.edit.platform;
+                            if (!pl){alert("Platform seçin");return;}
+                            await upsertExternalRating(currentHotelId,{platform:pl,rating:extForm.rating!==""?parseFloat(extForm.rating):null,review_count:extForm.review_count!==""?parseInt(extForm.review_count):null,url:extForm.url||null});
+                            setExtModal(null);loadExtRatings(currentHotelId);
+                          }}>Kaydet</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Pie chart */}
           <div className="chart-card glass-panel">
             <h3 className="chart-title" style={{display:"flex",alignItems:"center",flexWrap:"wrap",gap:8}}>
@@ -675,7 +954,7 @@ export default function Dashboard() {
                       <linearGradient id="gradNeu" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#F59E0B" stopOpacity={0.3}/><stop offset="95%" stopColor="#F59E0B" stopOpacity={0.03}/></linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false}/>
-                    <XAxis dataKey="period" tickFormatter={formatPeriod} stroke="var(--text-muted)" tick={{fill:"var(--text-secondary)",fontSize:12}} axisLine={false} tickLine={false}/>
+                    <XAxis dataKey="period" tickFormatter={formatPeriod} stroke="var(--text-muted)" tick={{fill:"var(--text-secondary)",fontSize:12}} axisLine={false} tickLine={false} interval={trendGroupBy==="daily" ? Math.floor(processedTrendData.length/6) : 0}/>
                     <YAxis yAxisId="left" stroke="var(--text-muted)" tick={{fill:"var(--text-secondary)",fontSize:12}} axisLine={false} tickLine={false} allowDecimals={false}/>
                     <YAxis yAxisId="right" orientation="right" domain={[0,10]} stroke="var(--text-muted)" tick={{fill:"#60A5FA",fontSize:11}} axisLine={false} tickLine={false}/>
                     <Tooltip content={<TrendTooltip/>}/>
@@ -694,7 +973,7 @@ export default function Dashboard() {
             )}
             {trendData.length>0 && (
               <div style={{display:"flex",gap:24,marginTop:14,paddingTop:12,borderTop:"1px solid rgba(255,255,255,0.06)",flexWrap:"wrap"}}>
-                <span style={{fontSize:"0.82rem",color:"var(--text-muted)"}}>Dönem: <strong style={{color:"var(--text-secondary)"}}>{trendData.length} {trendGroupBy==="daily"?"gün":trendGroupBy==="weekly"?"hafta":"ay"}</strong></span>
+                <span style={{fontSize:"0.82rem",color:"var(--text-muted)"}}>Dönem: <strong style={{color:"var(--text-secondary)"}}>{trendGroupBy==="daily" ? "Son 30 gün" : `${trendData.length} ${trendGroupBy==="weekly"?"hafta":"ay"}`}</strong></span>
                 <span style={{fontSize:"0.82rem",color:"var(--text-muted)"}}>Toplam: <strong style={{color:"var(--text-secondary)"}}>{trendData.reduce((s,d)=>s+d.total,0)} yorum</strong></span>
                 <span style={{fontSize:"0.82rem",color:"var(--text-muted)"}}>Ort. Memnuniyet: <strong style={{color:"#10B981"}}>{avgTrend}{avgTrend!=="—"?" / 10":""}</strong></span>
               </div>

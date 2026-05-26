@@ -12,7 +12,7 @@ pause
 
 echo.
 echo [1/2] Backend (FastAPI) sunucusu baslatiliyor...
-start "HotelReviewAI - BACKEND" cmd /k "cd backend && echo Gerekli kutuphaneler kontrol ediliyor... && pip install -r requirements.txt && echo. && echo Backend baslatiliyor... && uvicorn app.main:app --reload"
+start "HotelReviewAI - BACKEND" cmd /k "cd backend && echo Gerekli kutuphaneler kontrol ediliyor... && pip install -r requirements.txt && echo. && echo Backend baslatiliyor... && python -m uvicorn app.main:app --reload --port 8000"
 
 timeout /t 5 >nul
 

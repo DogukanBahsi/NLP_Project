@@ -102,7 +102,15 @@ def get_dashboard_summary(
     if hotel_id is not None:
         hotel = db.query(models.Hotel).filter(models.Hotel.id == hotel_id).first()
         if hotel:
-            selected_hotel = {"id": hotel.id, "name": hotel.name}
+            selected_hotel = {
+                "id":           hotel.id,
+                "name":         hotel.name,
+                "google_rating": hotel.google_rating,
+                "place_id":     hotel.place_id,
+                "latitude":     hotel.latitude,
+                "longitude":    hotel.longitude,
+                "address":      hotel.address,
+            }
 
     all_hotels = db.query(models.Hotel).all()
     analyzed_hotels = [{"id": h.id, "name": h.name} for h in all_hotels]
@@ -246,10 +254,22 @@ def get_trend_data(
             g["score_sum"] += review.satisfaction_score
             g["score_count"] += 1
 
+    # ── Günlük modda eksik günleri sıfırla (30 gün kesintisiz aks) ───────────
+    if group_by == "daily" and cutoff:
+        from datetime import date as date_type
+        day = cutoff.date()
+        today = datetime.utcnow().date()
+        while day <= today:
+            key = day.strftime("%Y-%m-%d")
+            if key not in groups:
+                groups[key] = {"total": 0, "positive": 0, "negative": 0,
+                               "neutral": 0, "score_sum": 0.0, "score_count": 0}
+            day += timedelta(days=1)
+
     result = []
     for period in sorted(groups.keys()):
         g = groups[period]
-        avg = round(g["score_sum"] / g["score_count"] / 10.0, 2) if g["score_count"] > 0 else 0
+        avg = round(g["score_sum"] / g["score_count"] / 10.0, 2) if g["score_count"] > 0 else None
         result.append({
             "period": period,
             "total": g["total"],
