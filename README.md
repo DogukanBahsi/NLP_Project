@@ -2,7 +2,7 @@
 ### Yapay Zekâ Destekli Otel Yorum Analiz Platformu
 
 <p align="center">
-  <img src="<img width="164" height="45" alt="Ekran görüntüsü 2026-05-26 182618" src="https://github.com/user-attachments/assets/80963ea8-ce50-49d1-ae5c-7f6cd8a1af70" />" width="850"/>
+  <img src="[PROJECT_LOGO_OR_SCREENSHOT]" width="850"/>
 </p>
 
 <p align="center">
