@@ -407,8 +407,11 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 # 📬 İletişim
 
 ## Geliştiriciler
+
 **Ramazan Doğukan Bahşi**
+
 **Yasin Almaz**
+
 **Berat Demirbaş**
 
 - GitHub: [https://github.com/DogukanBahsi]
