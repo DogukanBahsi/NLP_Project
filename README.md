@@ -73,8 +73,6 @@ Yorumları aşağıdaki kategorilere göre analiz eder:
 ## 📄 Raporlama Sistemi
 Analiz sonuçlarını:
 - PDF
-- Excel
-- CSV
 
 formatlarında dışa aktarabilir.
 
@@ -222,12 +220,8 @@ http://localhost:3000
 ## Adım 1 — Uygulamayı Başlatın
 Backend ve frontend sunucularını çalıştırın.
 
-## Adım 2 — Veri Seti Yükleyin
-Otel yorumlarını:
-- CSV
-- Excel (.xlsx)
-
-formatında sisteme yükleyin.
+## Adım 2 — Otel Arama
+Arama kısmında istediğiniz oteli aratın.
 
 ## Adım 3 — Otomatik NLP İşleme
 Sistem otomatik olarak:
@@ -317,7 +311,7 @@ Aşağıdaki durumlarda performans düşebilir:
 
 | İsim | Rol |
 |---|---|
-| Doğukan Bahşi | Full Stack & NLP Geliştirme |
+| Ramazan Doğukan Bahşi | Full Stack & NLP Geliştirme |
 | Yasin Almaz | Veri Mühendisliği & Backend |
 | Berat Demirbaş | Frontend & UI/UX |
 
@@ -373,19 +367,6 @@ Dashboard Görselleştirme
 
 ---
 
-# 🔐 Ortam Değişkenleri (.env)
-
-Örnek `.env` dosyası:
-
-```env
-DATABASE_URL=[DATABASE_URL]
-SECRET_KEY=[SECRET_KEY]
-MODEL_PATH=[MODEL_PATH]
-API_KEY=[OPSİYONEL]
-```
-
----
-
 # 📦 Deployment
 
 ## Production Build
@@ -412,14 +393,6 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ---
 
-# 📝 Lisans
-
-Bu proje MIT lisansı ile lisanslanmıştır.
-
-[LISANS_DOSYASI_VARSA]
-
----
-
 # ⭐ Teşekkürler
 
 Özel teşekkürler:
@@ -433,12 +406,14 @@ Bu proje MIT lisansı ile lisanslanmıştır.
 
 # 📬 İletişim
 
-## Geliştirici
-**Doğukan Bahşi**
+## Geliştiriciler
+**Ramazan Doğukan Bahşi**
+**Yasin Almaz**
+**Berat Demirbaş**
 
-- GitHub: [GITHUB_PROFILIN]
-- LinkedIn: [LINKEDIN]
-- E-posta: [EMAIL]
+- GitHub: [github.com/DogukanBahsi]
+- LinkedIn: [linkedin.com/in/dogukanbhs/]
+- E-posta: [dgkn.bhsi@gmail.com]
 
 ---
 
