@@ -2,7 +2,7 @@
 ### Yapay Zekâ Destekli Otel Yorum Analiz Platformu
 
 <p align="center">
-  <img src="[[PROJECT_LOGO_OR_SCREENSHOT]](https://github.com/DogukanBahsi/NLP_Project/blob/main/Logo.png?raw=true)" width="850"/>
+  <img src="https://github.com/DogukanBahsi/NLP_Project/blob/main/Logo.png" width="850"/>
 </p>
 
 <p align="center">
