@@ -174,7 +174,22 @@ export default function Dashboard() {
     try {
       const d = await getDashboardSummary(hotelId);
       setData(d);
-    } catch (err) { console.error("Dashboard hatası:", err); }
+    } catch (err) {
+      console.error("Dashboard hatası:", err);
+      // API başarısız olsa bile spinner'ın sonsuz dönmesini engelle
+      setData({
+        selected_hotel: null,
+        analyzed_hotels: [],
+        total_reviews: 0,
+        average_satisfaction_score: 0,
+        sentiment_distribution: { pozitif: 0, negatif: 0, "nötr": 0 },
+        top_issue_categories: [],
+        high_risk_reviews: [],
+        weekly_action_plan: "Backend bağlantısı kurulamadı. Sunucunun çalıştığını kontrol edin.",
+        action_plan: [],
+        source_analysis: [],
+      });
+    }
     loadExtRatings(hotelId);
   };
 
