@@ -1,9 +1,8 @@
 # 🏨 HotelReviewAI  
-### AI-Powered Hotel Review Analysis Platform
+### Yapay Zekâ Destekli Otel Yorum Analiz Platformu
 
 <p align="center">
-  <img src="<img width="164" height="45" alt="image" src="https://github.com/user-attachments/assets/f24d829b-85bf-4e62-8cb5-a70883007676" />
-" width="850"/>
+  <img src="[PROJECT_LOGO_OR_SCREENSHOT]" width="850"/>
 </p>
 
 <p align="center">
@@ -16,74 +15,81 @@
 
 ---
 
-# 📌 Overview
+# 📌 Proje Hakkında
 
-**HotelReviewAI** is an AI-powered hotel review analysis platform developed using Natural Language Processing (NLP) techniques.  
-The system automatically analyzes customer reviews, measures customer satisfaction, and provides actionable insights for hotel management teams.
+**HotelReviewAI**, otel müşteri yorumlarını Doğal Dil İşleme (NLP) teknikleri kullanarak analiz eden yapay zekâ destekli bir analiz platformudur.  
+Sistem, müşteri yorumlarını otomatik olarak analiz eder, müşteri memnuniyetini ölçer ve otel yönetimleri için veriye dayalı içgörüler sunar.
 
-Instead of manually reading hundreds of reviews, hotel businesses can instantly identify strengths, weaknesses, and customer sentiment trends through intelligent data analysis and interactive visualizations.
+Yüzlerce yorumu manuel olarak okumak yerine işletmeler:
+- müşteri memnuniyet trendlerini,
+- hizmet kalitesini,
+- güçlü ve zayıf yönlerini
 
----
-
-# 🎯 Project Objectives
-
-- Automate hotel review analysis
-- Reduce manual review workload
-- Detect customer satisfaction trends
-- Improve service quality using data-driven insights
-- Provide real-time sentiment monitoring
+anlık olarak analiz edebilir.
 
 ---
 
-# 👥 Target Audience
+# 🎯 Proje Amacı
 
-- Hotel Managers
-- Customer Service Teams
-- Tourism Industry Analysts
-- Hospitality Businesses
-- Academic NLP Researchers
-
----
-
-# ✨ Features
-
-## 🧠 NLP Sentiment Analysis
-- Automatic positive/negative sentiment classification
-- AI-based review interpretation
-- Multi-language support optimization (Turkish & English)
-
-## 📊 Category-Based Analysis
-Analyze hotel reviews by categories such as:
-- Cleanliness
-- Food Quality
-- Staff Service
-- Room Comfort
-- Location
-
-## 📈 Interactive Dashboard
-- Real-time charts and analytics
-- Hotel performance overview
-- Sentiment distribution graphs
-- Trend visualization
-
-## 📄 Report Generation
-Export analysis results as:
-- PDF Reports
-- Excel Files
-- CSV Outputs
-
-## 🔌 REST API Support
-- Custom RESTful API architecture
-- Swagger/OpenAPI documentation
-- Easy frontend-backend integration
+- Otel yorum analiz süreçlerini otomatikleştirmek
+- Manuel yorum inceleme yükünü azaltmak
+- Müşteri memnuniyet trendlerini tespit etmek
+- Hizmet kalitesini veriye dayalı olarak geliştirmek
+- Gerçek zamanlı duygu analizi sağlamak
 
 ---
 
-# 🛠️ Tech Stack
+# 👥 Hedef Kitle
+
+- Otel Yöneticileri
+- Müşteri Hizmetleri Departmanları
+- Turizm Sektörü Analistleri
+- Konaklama İşletmeleri
+- NLP / Yapay Zekâ Araştırmacıları
+
+---
+
+# ✨ Özellikler
+
+## 🧠 NLP Duygu Analizi
+- Yorumların otomatik olumlu/olumsuz sınıflandırılması
+- Yapay zekâ destekli yorum analizi
+- Türkçe ve İngilizce dil desteği optimizasyonu
+
+## 📊 Kategori Bazlı Analiz
+Yorumları aşağıdaki kategorilere göre analiz eder:
+- Temizlik
+- Yemek Kalitesi
+- Personel Hizmeti
+- Oda Konforu
+- Lokasyon
+
+## 📈 İnteraktif Dashboard
+- Gerçek zamanlı grafikler
+- Genel otel performans analizi
+- Duygu dağılım grafikleri
+- Trend görselleştirmeleri
+
+## 📄 Raporlama Sistemi
+Analiz sonuçlarını:
+- PDF
+- Excel
+- CSV
+
+formatlarında dışa aktarabilir.
+
+## 🔌 REST API Desteği
+- Özel geliştirilmiş RESTful API mimarisi
+- Swagger/OpenAPI dokümantasyonu
+- Kolay frontend-backend entegrasyonu
+
+---
+
+# 🛠️ Kullanılan Teknolojiler
 
 ## Frontend
 - React.js / Next.js
-- TailwindCSS [IF USED]
+- TailwindCSS [KULLANILIYORSA]
 - Axios
 - Chart.js / Plotly
 
@@ -91,72 +97,72 @@ Export analysis results as:
 - FastAPI / Flask
 - Python 3.11+
 
-## Database
+## Veritabanı
 - SQLite / PostgreSQL
 
-## AI & NLP
+## Yapay Zekâ & NLP
 - PyTorch
 - HuggingFace Transformers
 - SpaCy
 - Scikit-learn
 
-## Data Processing
+## Veri İşleme
 - Pandas
 - NumPy
 
-## Visualization
+## Görselleştirme
 - Matplotlib
 - Plotly
 
 ---
 
-# 🧩 System Architecture
+# 🧩 Sistem Mimarisi
 
 ```text
-Raw Reviews
+Ham Yorumlar
       ↓
-Preprocessing & Cleaning
+Ön İşleme & Temizleme
       ↓
-NLP Sentiment Model
+NLP Duygu Analizi Modeli
       ↓
-Classification & Scoring
+Sınıflandırma & Skorlama
       ↓
-Database Storage
+Veritabanı Kaydı
       ↓
-Dashboard Visualization
+Dashboard Görselleştirme
 ```
 
 ---
 
-# 📂 Project Structure
+# 📂 Proje Yapısı
 
 ```plaintext
 HotelReviewAI/
-├── backend/                 # Backend API and NLP Pipeline
-│   ├── app/                 # Main application source code
-│   ├── data/                # Datasets and raw review data
-│   ├── models/              # Trained AI/NLP models
-│   ├── routes/              # API routes
-│   ├── services/            # Business logic
+├── backend/                 # Backend API ve NLP Pipeline
+│   ├── app/                 # Ana uygulama kaynak kodları
+│   ├── data/                # Dataset ve ham veriler
+│   ├── models/              # Eğitilmiş AI/NLP modelleri
+│   ├── routes/              # API endpointleri
+│   ├── services/            # İş mantığı servisleri
 │   └── requirements.txt
 │
-├── frontend/                # React / Next.js frontend
+├── frontend/                # React / Next.js arayüzü
 │   ├── components/
 │   ├── pages/
 │   ├── public/
 │   └── package.json
 │
-├── docs/                    # UML diagrams, reports and documentation
-├── screenshots/             # Project screenshots
+├── docs/                    # UML diyagramları ve raporlar
+├── screenshots/             # Proje ekran görüntüleri
 ├── README.md
 └── .gitignore
 ```
 
 ---
 
-# ⚙️ Installation
+# ⚙️ Kurulum
 
-## 1️⃣ Clone the Repository
+## 1️⃣ Repoyu Klonlayın
 
 ```bash
 git clone https://github.com/DogukanBahsi/NLP_Project.git
@@ -165,27 +171,27 @@ cd HotelReviewAI
 
 ---
 
-## 2️⃣ Backend Setup
+## 2️⃣ Backend Kurulumu
 
 ```bash
 cd backend
 
 pip install -r requirements.txt
 
-# Create .env file
+# .env dosyası oluşturun
 touch .env
 
-# Start FastAPI server
+# FastAPI sunucusunu başlatın
 uvicorn app.main:app --reload
 ```
 
-Backend will run at:
+Backend adresi:
 
 ```txt
 http://localhost:8000
 ```
 
-Swagger API Documentation:
+Swagger API Dokümantasyonu:
 
 ```txt
 http://localhost:8000/docs
@@ -193,7 +199,7 @@ http://localhost:8000/docs
 
 ---
 
-## 3️⃣ Frontend Setup
+## 3️⃣ Frontend Kurulumu
 
 ```bash
 cd frontend
@@ -203,7 +209,7 @@ npm install
 npm run dev
 ```
 
-Frontend will run at:
+Frontend adresi:
 
 ```txt
 http://localhost:3000
@@ -211,158 +217,165 @@ http://localhost:3000
 
 ---
 
-# 🚀 Usage
+# 🚀 Kullanım
 
-## Step 1 — Launch the Application
-Start both backend and frontend servers.
+## Adım 1 — Uygulamayı Başlatın
+Backend ve frontend sunucularını çalıştırın.
 
-## Step 2 — Upload Review Dataset
-Upload hotel reviews using:
-- CSV files
-- Excel files (.xlsx)
+## Adım 2 — Veri Seti Yükleyin
+Otel yorumlarını:
+- CSV
+- Excel (.xlsx)
 
-## Step 3 — Automatic NLP Processing
-The system automatically:
-- Cleans the text
-- Processes reviews
-- Runs sentiment analysis
-- Generates category scores
+formatında sisteme yükleyin.
 
-## Step 4 — Visual Analytics
-View:
-- Sentiment graphs
-- Customer satisfaction scores
-- Trend analyses
-- Summary reports
+## Adım 3 — Otomatik NLP İşleme
+Sistem otomatik olarak:
+- metni temizler,
+- yorumları işler,
+- duygu analizi yapar,
+- kategori skorlarını üretir.
 
----
+## Adım 4 — Görsel Analizleri İnceleyin
+Dashboard üzerinden:
+- duygu grafikleri,
+- müşteri memnuniyet skorları,
+- trend analizleri,
+- özet raporlar
 
-# 📊 Example Analysis Outputs
-
-- Positive vs Negative Review Ratio
-- Customer Satisfaction Score
-- Most Mentioned Problems
-- Service Quality Heatmaps
-- Category-Based Ratings
+görüntülenebilir.
 
 ---
 
-# 🧪 API Documentation
+# 📊 Örnek Analiz Çıktıları
 
-Interactive Swagger documentation is available at:
+- Olumlu / Olumsuz Yorum Oranı
+- Müşteri Memnuniyet Skoru
+- En Çok Şikâyet Edilen Konular
+- Hizmet Kalitesi Isı Haritası
+- Kategori Bazlı Skorlar
+
+---
+
+# 🧪 API Dokümantasyonu
+
+Swagger dokümantasyonuna aşağıdaki adresten erişebilirsiniz:
 
 ```txt
 http://localhost:8000/docs
 ```
 
-Example API Endpoints:
+Örnek API Endpointleri:
 
-| Method | Endpoint | Description |
+| Method | Endpoint | Açıklama |
 |---|---|---|
-| POST | `/analyze` | Analyze uploaded reviews |
-| GET | `/reports` | Fetch generated reports |
-| GET | `/dashboard` | Retrieve dashboard statistics |
+| POST | `/analyze` | Yüklenen yorumları analiz eder |
+| GET | `/reports` | Oluşturulan raporları getirir |
+| GET | `/dashboard` | Dashboard istatistiklerini döndürür |
 
 ---
 
-# 🖼️ Screenshots
+# 🖼️ Ekran Görüntüleri
 
 ## Dashboard
 ![Dashboard Screenshot]([DASHBOARD_SCREENSHOT])
 
-## Sentiment Analysis
+## Duygu Analizi
 ![Sentiment Screenshot]([SENTIMENT_SCREENSHOT])
 
-## Analytics Page
+## Analitik Sayfası
 ![Analytics Screenshot]([ANALYTICS_SCREENSHOT])
 
 ---
 
-# 🔒 Limitations
+# 🔒 Kısıtlamalar
 
-- The NLP model is optimized primarily for:
-  - English
-  - Turkish
+- NLP modeli temel olarak:
+  - Türkçe
+  - İngilizce
 
-- Performance may vary for:
-  - Slang-heavy reviews
-  - Mixed-language comments
-  - Sarcastic expressions
+yorumlar için optimize edilmiştir.
 
----
-
-# 🔮 Future Improvements
-
-- Booking.com API Integration
-- TripAdvisor Data Integration
-- Real-Time Review Streaming
-- Multi-language Expansion
-- AI Chat Assistant for Hotel Insights
-- Advanced Recommendation System
-- Docker & Kubernetes Deployment
-- Role-Based Authentication System
+Aşağıdaki durumlarda performans düşebilir:
+- Argo ağırlıklı yorumlar
+- Karışık dil kullanımı
+- İronik / alaycı ifadeler
 
 ---
 
-# 🎓 Academic Information
+# 🔮 Gelecek Geliştirmeler
 
-| Field | Information |
+- Booking.com API Entegrasyonu
+- TripAdvisor Veri Entegrasyonu
+- Gerçek Zamanlı Veri Akışı
+- Çoklu Dil Desteği
+- Yapay Zekâ Destekli Chat Asistanı
+- Gelişmiş Öneri Sistemi
+- Docker & Kubernetes Desteği
+- Rol Bazlı Yetkilendirme Sistemi
+
+---
+
+# 🎓 Akademik Bilgiler
+
+| Alan | Bilgi |
 |---|---|
-| Course | Natural Language Processing |
-| University | Istanbul Gedik University |
-| Project Type | Academic AI/NLP Project |
-| Semester | [FILL_HERE] |
-| Instructor | [FILL_HERE] |
+| Ders | Doğal Dil İşleme |
+| Üniversite | İstanbul Gedik Üniversitesi |
+| Proje Türü | Akademik AI/NLP Projesi |
+| Dönem | [BURAYI_DOLDUR] |
+| Danışman / Hoca | [BURAYI_DOLDUR] |
 
 ---
 
-# 👨‍💻 Contributors
+# 👨‍💻 Katkıda Bulunanlar
 
-| Name | Role |
+| İsim | Rol |
 |---|---|
-| Doğukan Bahşi | Full Stack & NLP Development |
-| [TEAM_MEMBER] | [ROLE] |
+| Doğukan Bahşi | Full Stack & NLP Geliştirme |
+| [TAKIM_ARKADAŞI] | [ROL] |
 
 ---
 
-# 📈 Model & NLP Details
+# 📈 Model & NLP Detayları
 
-## NLP Pipeline Includes:
-- Text Cleaning
+## NLP Pipeline İçeriği
+- Metin Temizleme
 - Tokenization
 - Stopword Removal
 - Lemmatization
-- Embedding Generation
-- Sentiment Classification
+- Embedding Üretimi
+- Duygu Sınıflandırması
 
-## Model Information
-| Component | Technology |
+## Model Bilgileri
+
+| Bileşen | Teknoloji |
 |---|---|
-| Transformer Model | [MODEL_NAME] |
-| Embedding Method | [EMBEDDING_METHOD] |
-| Classification Algorithm | [CLASSIFIER_NAME] |
+| Transformer Modeli | [MODEL_ADI] |
+| Embedding Yöntemi | [EMBEDDING_YÖNTEMİ] |
+| Sınıflandırma Algoritması | [CLASSIFIER_ADI] |
 
 ---
 
-# 🧠 AI Workflow
+# 🧠 Yapay Zekâ İş Akışı
 
 ```text
-User Uploads Reviews
+Kullanıcı Yorumları Yükler
         ↓
-Text Preprocessing
+Metin Ön İşleme
         ↓
-Transformer-Based NLP Model
+Transformer Tabanlı NLP Modeli
         ↓
-Sentiment Prediction
+Duygu Tahmini
         ↓
-Data Aggregation
+Veri Toplama & Analiz
         ↓
-Dashboard Visualization
+Dashboard Görselleştirme
 ```
 
 ---
 
-# 📋 Requirements
+# 📋 Gereksinimler
 
 ## Backend
 - Python 3.11+
@@ -374,15 +387,15 @@ Dashboard Visualization
 
 ---
 
-# 🔐 Environment Variables
+# 🔐 Ortam Değişkenleri (.env)
 
-Example `.env` file:
+Örnek `.env` dosyası:
 
 ```env
-DATABASE_URL=[YOUR_DATABASE_URL]
-SECRET_KEY=[YOUR_SECRET_KEY]
-MODEL_PATH=[YOUR_MODEL_PATH]
-API_KEY=[OPTIONAL]
+DATABASE_URL=[DATABASE_URL]
+SECRET_KEY=[SECRET_KEY]
+MODEL_PATH=[MODEL_PATH]
+API_KEY=[OPSİYONEL]
 ```
 
 ---
@@ -403,7 +416,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ---
 
-# 📚 Possible Research Extensions
+# 📚 Genişletilebilir Araştırma Alanları
 
 - Emotion Detection
 - Fake Review Detection
@@ -413,36 +426,36 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ---
 
-# 📝 License
+# 📝 Lisans
 
-This project is licensed under the MIT License.
+Bu proje MIT lisansı ile lisanslanmıştır.
 
-[LICENSE_FILE_IF_EXISTS]
+[LISANS_DOSYASI_VARSA]
 
 ---
 
-# ⭐ Acknowledgements
+# ⭐ Teşekkürler
 
-Special thanks to:
+Özel teşekkürler:
 - HuggingFace
 - SpaCy
 - FastAPI
 - React Community
-- Open Source NLP Ecosystem
+- Açık Kaynak NLP Ekosistemi
 
 ---
 
-# 📬 Contact
+# 📬 İletişim
 
-## Developer
+## Geliştirici
 **Doğukan Bahşi**
 
-- GitHub: [YOUR_GITHUB_PROFILE]
-- LinkedIn: [YOUR_LINKEDIN]
-- Email: [YOUR_EMAIL]
+- GitHub: [GITHUB_PROFILIN]
+- LinkedIn: [LINKEDIN]
+- E-posta: [EMAIL]
 
 ---
 
 <p align="center">
-  <b>HotelReviewAI — Transforming Hotel Feedback into Actionable Intelligence 🚀</b>
+  <b>HotelReviewAI — Otel Yorumlarını Akıllı Veriye Dönüştürür 🚀</b>
 </p>
