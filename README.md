@@ -280,8 +280,6 @@ http://localhost:8000/docs
 ## Dashboard
 ![Dashboard Screenshot](https://github.com/DogukanBahsi/NLP_Project/blob/main/Dashboard.png)
 
-## Duygu Analizi
-![Sentiment Screenshot]([SENTIMENT_SCREENSHOT])
 
 ## Analitik Sayfası
 ![Analytics Screenshot]([ANALYTICS_SCREENSHOT])
