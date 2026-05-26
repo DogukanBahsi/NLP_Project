@@ -497,8 +497,8 @@ python test_import.py
 |---|---|
 | **Ders** | Doğal Dil İşleme (NLP) |
 | **Üniversite** | İstanbul Gedik Üniversitesi |
-| **Proje Türü** | Akademik Bitirme Projesi |
-| **Dönem** | 2024–2025 Bahar Dönemi |
+| **Proje Türü** | Dönem Projesi |
+| **Dönem** | 2025–2026 Bahar Dönemi |
 | **Danışman** | Başak Buluz Kömeçoğlu |
 
 ---
@@ -508,8 +508,8 @@ python test_import.py
 | İsim | Rol |
 |---|---|
 | **Ramazan Doğukan Bahşi** | Full Stack Geliştirme · NLP Pipeline · Backend Mimarisi |
-| **Yasin Almaz** | Veri Mühendisliği · Model Eğitimi · Backend |
-| **Berat Demirbaş** | Frontend · UI/UX · Dashboard Tasarımı |
+| **Yasin Almaz** | Veri Mühendisliği · Backend |
+| **Berat Demirbaş** | Frontend · Dashboard Tasarımı |
 
 ---
 
