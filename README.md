@@ -411,8 +411,8 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 **Yasin Almaz**
 **Berat Demirbaş**
 
-- GitHub: [github.com/DogukanBahsi]
-- LinkedIn: [linkedin.com/in/dogukanbhs/]
+- GitHub: [https://github.com/DogukanBahsi]
+- LinkedIn: [https://www.linkedin.com/in/dogukanbhs/]
 - E-posta: [dgkn.bhsi@gmail.com]
 
 ---
