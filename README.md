@@ -301,19 +301,6 @@ Aşağıdaki durumlarda performans düşebilir:
 
 ---
 
-# 🔮 Gelecek Geliştirmeler
-
-- Booking.com API Entegrasyonu
-- TripAdvisor Veri Entegrasyonu
-- Gerçek Zamanlı Veri Akışı
-- Çoklu Dil Desteği
-- Yapay Zekâ Destekli Chat Asistanı
-- Gelişmiş Öneri Sistemi
-- Docker & Kubernetes Desteği
-- Rol Bazlı Yetkilendirme Sistemi
-
----
-
 # 🎓 Akademik Bilgiler
 
 | Alan | Bilgi |
@@ -321,8 +308,8 @@ Aşağıdaki durumlarda performans düşebilir:
 | Ders | Doğal Dil İşleme |
 | Üniversite | İstanbul Gedik Üniversitesi |
 | Proje Türü | Akademik AI/NLP Projesi |
-| Dönem | [BURAYI_DOLDUR] |
-| Danışman / Hoca | [BURAYI_DOLDUR] |
+| Dönem | Bahar Dönemi |
+| Danışman / Hoca | Başak Buluz Kömeçoğlu |
 
 ---
 
@@ -331,7 +318,8 @@ Aşağıdaki durumlarda performans düşebilir:
 | İsim | Rol |
 |---|---|
 | Doğukan Bahşi | Full Stack & NLP Geliştirme |
-| [TAKIM_ARKADAŞI] | [ROL] |
+| Yasin Almaz | Veri Mühendisliği & Backend |
+| Berat Demirbaş | Frontend & UI/UX |
 
 ---
 
@@ -349,9 +337,9 @@ Aşağıdaki durumlarda performans düşebilir:
 
 | Bileşen | Teknoloji |
 |---|---|
-| Transformer Modeli | [MODEL_ADI] |
-| Embedding Yöntemi | [EMBEDDING_YÖNTEMİ] |
-| Sınıflandırma Algoritması | [CLASSIFIER_ADI] |
+| Transformer Modeli | Scikit-Learn |
+| Embedding Yöntemi | TF-IDF Vectorization |
+| Sınıflandırma Algoritması | Machine Learning Classifier |
 
 ---
 
