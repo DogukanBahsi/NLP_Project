@@ -2,7 +2,8 @@
 ### AI-Powered Hotel Review Analysis Platform
 
 <p align="center">
-  <img src="[PROJECT_LOGO_OR_SCREENSHOT]" width="850"/>
+  <img src="<img width="164" height="45" alt="image" src="https://github.com/user-attachments/assets/f24d829b-85bf-4e62-8cb5-a70883007676" />
+" width="850"/>
 </p>
 
 <p align="center">
