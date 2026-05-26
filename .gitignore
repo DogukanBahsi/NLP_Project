@@ -3,3 +3,16 @@
 *.dll
 *.db
 __pycache__/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+# Next.js build output
+.next/
+out/
+
+# Environment files
+.env.local
+.env*.local
