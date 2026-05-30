@@ -132,10 +132,18 @@ HotelReviewAI/
 │   │       ├── serpapi_service.py     # SerpAPI veri çekme servisi (v5)
 │   │       └── source_selector.py     # Kaynak normalizasyon + meta
 │   │
+│   ├── migrate_db.py                  # Veritabanı şema migrasyon scripti
+│   ├── check_hf.py                    # HuggingFace model indirme kontrolü
+│   ├── test_nlp.py                    # NLP pipeline birim testi
+│   ├── test_import.py                 # Import testi
+│   ├── test_download.py               # Model indirme testi
+│   ├── test_verbose.py                # Detaylı çıktılı test
+│   ├── scratch_pdf.py                 # PDF geliştirme/deneme scripti
 │   └── requirements.txt
 │
 ├── frontend/
 │   ├── src/
+│   │   ├── assets/                    # Statik görseller
 │   │   ├── main.jsx                   # React giriş noktası
 │   │   ├── App.jsx                    # Kök bileşen
 │   │   ├── Dashboard.jsx              # Ana dashboard
@@ -143,6 +151,8 @@ HotelReviewAI/
 │   │   └── index.css                  # Global CSS + animasyonlar
 │   │
 │   ├── index.html
+│   ├── vite.config.js                 # Vite yapılandırması
+│   ├── eslint.config.js               # ESLint kuralları
 │   └── package.json
 │
 ├── Dashboard.png
@@ -424,18 +434,52 @@ Veritabanina Kayit (SQLite)
 ## 📋 requirements.txt (Özet)
 
 ```text
+# Web Framework
 fastapi==0.136.1
-uvicorn
-sqlalchemy==2.0.49
+uvicorn==0.46.0
+python-multipart==0.0.27
+starlette==1.0.0
+
+# Veritabanı
+SQLAlchemy==2.0.49
+greenlet==3.5.0
+
+# NLP & ML
 torch==2.11.0
 transformers==5.7.0
 scikit-learn==1.8.0
-reportlab
-serpapi
-pandas
-python-multipart
-deep-translator
-dateparser
+huggingface_hub==1.13.0
+tokenizers==0.22.2
+safetensors==0.7.0
+
+# Veri İşleme
+pandas==3.0.2
+numpy==2.4.4
+openpyxl==3.1.5
+
+# HTTP & API
+requests==2.33.1
+httpx==0.28.1
+serpapi==1.0.2
+
+# Çeviri & Tarih
+deep-translator==1.11.4
+dateparser==1.4.0
+python-dateutil==2.9.0.post0
+pytz==2026.2
+
+# PDF Raporu
+reportlab==4.5.0
+pillow==12.2.0
+
+# Yardımcı
+python-dotenv==1.2.2
+pydantic==2.13.3
+PyYAML==6.0.3
+tqdm==4.67.3
+regex==2026.4.4
+filelock==3.29.0
+packaging==26.2
 ```
 
 ---
@@ -466,28 +510,36 @@ python test_import.py
 | `place_id` | String | Google Maps place_id |
 | `latitude` / `longitude` | Float | GPS koordinatları |
 | `address` | String | Tam adres |
+| `created_at` | DateTime | Kayıt oluşturma zamanı |
 
 ### ExternalRating
 | Sütun | Tip | Açıklama |
 |---|---|---|
+| `id` | Integer PK | Birincil anahtar |
 | `hotel_id` | FK | Hotel.id |
 | `platform` | String | `tripadvisor`, `booking`, `expedia` … |
 | `rating` | Float | Platform puanı |
 | `max_rating` | Float | Maksimum puan (5.0 veya 10.0) |
 | `review_count` | Integer | Platformdaki yorum sayısı |
 | `url` | String | Platform profil bağlantısı |
+| `updated_at` | DateTime | Son güncelleme zamanı |
 
 ### Review
 | Sütun | Tip | Açıklama |
 |---|---|---|
 | `hotel_id` | FK | Hotel.id |
 | `source` | String | `serpapi`, `csv`, `manual` |
+| `reviewer_name` | String | Yorumcu adı (opsiyonel) |
+| `rating` | Float | Yorumcunun verdiği yıldız puanı |
 | `comment` | Text | Yorum metni |
 | `sentiment` | String | `pozitif` / `negatif` / `nötr` |
 | `satisfaction_score` | Float | 0–100 memnuniyet skoru |
 | `risk_score` | Float | 0–100 itibar riski skoru |
 | `issue_category` | String | `temizlik`, `oda`, `yemek` … |
+| `action_suggestion` | Text | Üretilen aksiyon önerisi |
 | `review_date` | DateTime | Yorumun yazıldığı tarih |
+| `review_date_raw` | String | Ham tarih metni (kaynak string) |
+| `created_at` | DateTime | Kayıt oluşturma zamanı |
 
 ---
 
