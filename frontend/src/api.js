@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// Local: http://127.0.0.1:8000 | Production: VITE_API_URL env var
+const BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
 export const API = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: BASE_URL,
 });
 
 // Her istekte localStorage'daki token'ı Authorization header'ına ekle
@@ -37,7 +40,7 @@ export const registerUser = async (username, email, password, password_confirm) 
 };
 
 export const fetchMe = async (token) => {
-  const res = await axios.get("http://127.0.0.1:8000/auth/me", {
+  const res = await axios.get(`${BASE_URL}/auth/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data;
@@ -48,7 +51,7 @@ export const searchHotels = async (query) => {
   // filtreyi bozabiliyor; hl/gl backend'de ayarlandığından konum yeterli.
   const fixedQuery = `${query} Turkey`;
   const res = await fetch(
-    `http://127.0.0.1:8000/external/serpapi/search-hotels?query=${encodeURIComponent(fixedQuery)}`
+    `${BASE_URL}/external/serpapi/search-hotels?query=${encodeURIComponent(fixedQuery)}`
   );
   return res.json();
 };
@@ -60,7 +63,7 @@ export const importReviews = async (hotelName, dataId, googleRating, latitude, l
   if (longitude != null)     params.append("longitude",     longitude);
   if (placeId)               params.append("place_id",      placeId);
   if (address)               params.append("address",       address);
-  const res = await fetch(`http://127.0.0.1:8000/external/serpapi/import-reviews?${params}`, { method: "POST" });
+  const res = await fetch(`${BASE_URL}/external/serpapi/import-reviews?${params}`, { method: "POST" });
   return res.json();
 };
 
@@ -113,7 +116,7 @@ export const uploadCsvReviews = async (hotelId, file) => {
   const formData = new FormData();
   formData.append("file", file);
   const res = await fetch(
-    `http://127.0.0.1:8000/reviews/upload-csv?hotel_id=${hotelId}`,
+    `${BASE_URL}/reviews/upload-csv?hotel_id=${hotelId}`,
     { method: "POST", body: formData }
   );
   return res.json();
@@ -123,7 +126,7 @@ export const uploadMultiSourceCsv = async (hotelId, file) => {
   const formData = new FormData();
   formData.append("file", file);
   const res = await fetch(
-    `http://127.0.0.1:8000/reviews/upload-multi-source-csv?hotel_id=${hotelId}`,
+    `${BASE_URL}/reviews/upload-multi-source-csv?hotel_id=${hotelId}`,
     { method: "POST", body: formData }
   );
   return res.json();

@@ -1,18 +1,20 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "sqlite:///./hotel_review_ai.db"
+# Production'da DATABASE_URL (PostgreSQL), local'de SQLite
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./hotel_review_ai.db")
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
-)
+# Railway PostgreSQL URL'i "postgres://" ile başlar, SQLAlchemy "postgresql://" ister
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-)
+# SQLite için check_same_thread gerekli, PostgreSQL için gereksiz
+connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 

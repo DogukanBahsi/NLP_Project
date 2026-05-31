@@ -1,6 +1,5 @@
 import asyncio
-import asyncio
-from dotenv import load_dotenv  
+from dotenv import load_dotenv
 import os                      
 from contextlib import asynccontextmanager
 
@@ -29,13 +28,17 @@ async def lifespan(app: FastAPI):
     # ── Startup ──────────────────────────────────────────────────────────────
     Base.metadata.create_all(bind=engine)
 
-    from app.nlp.bert_analyzer import TurkishBertAnalyzer
-    bert = TurkishBertAnalyzer()
-    try:
-        loop = asyncio.get_running_loop()
-        await loop.run_in_executor(None, bert.initialize)
-    except Exception as exc:
-        print(f"BERT yuklenemedi — ML fallback aktif: {exc}")
+    # DISABLE_BERT=true ise (production/hafif mod) BERT yüklenmez
+    if os.getenv("DISABLE_BERT", "false").lower() != "true":
+        from app.nlp.bert_analyzer import TurkishBertAnalyzer
+        bert = TurkishBertAnalyzer()
+        try:
+            loop = asyncio.get_running_loop()
+            await loop.run_in_executor(None, bert.initialize)
+        except Exception as exc:
+            print(f"BERT yuklenemedi — ML fallback aktif: {exc}")
+    else:
+        print("BERT devre disi (DISABLE_BERT=true) — ML fallback aktif.")
 
     yield
     # ── Shutdown ─────────────────────────────────────────────────────────────
@@ -49,9 +52,13 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Production'da ALLOWED_ORIGINS env var ile kısıtlanır, local'de herkese açık
+_origins_env = os.getenv("ALLOWED_ORIGINS", "*")
+allowed_origins = [o.strip() for o in _origins_env.split(",")] if _origins_env != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
