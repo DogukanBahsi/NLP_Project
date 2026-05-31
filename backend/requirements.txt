@@ -39,6 +39,7 @@ pytz==2026.2
 # PDF Raporu
 reportlab==4.5.0
 pillow==12.2.0
+matplotlib==3.10.3
 
 # Auth & Güvenlik
 python-jose[cryptography]==3.3.0
