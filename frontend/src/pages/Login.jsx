@@ -43,9 +43,10 @@ export default function Login() {
     setLoading(true);
     setErrors({});
     try {
-      await login(form.email, form.password, form.rememberMe);
-      toast.success("Giriş başarılı! Hoş geldiniz.");
-      navigate("/", { replace: true });
+      const data = await login(form.email, form.password, form.rememberMe);
+      // login artık email döner, doğrulama sayfasına yönlendir
+      toast.info("Doğrulama kodu e-postanıza gönderildi.");
+      navigate("/verify-email", { state: { email: data.email, mode: "login" } });
     } catch (err) {
       const msg = err?.response?.data?.detail || "Giriş başarısız. Bilgilerinizi kontrol edin.";
       setErrors({ server: msg });

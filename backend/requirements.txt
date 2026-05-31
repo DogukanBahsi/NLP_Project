@@ -41,6 +41,9 @@ reportlab==4.5.0
 pillow==12.2.0
 matplotlib==3.10.3
 
+# E-posta
+resend==2.10.0
+
 # Auth & Güvenlik
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4

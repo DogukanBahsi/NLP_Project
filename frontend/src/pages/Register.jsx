@@ -61,9 +61,9 @@ export default function Register() {
     setLoading(true);
     setErrors({});
     try {
-      await register(form.username, form.email, form.password, form.passwordConfirm);
-      toast.success("Hesabınız oluşturuldu! Hoş geldiniz.");
-      navigate("/", { replace: true });
+      const data = await register(form.username, form.email, form.password, form.passwordConfirm);
+      toast.info("Doğrulama kodu e-postanıza gönderildi.");
+      navigate("/verify-email", { state: { email: data.email, mode: "register" } });
     } catch (err) {
       const msg = err?.response?.data?.detail || "Kayıt başarısız. Tekrar deneyin.";
       setErrors({ server: msg });

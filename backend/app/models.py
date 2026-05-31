@@ -8,11 +8,24 @@ from app.database import Base
 class User(Base):
     __tablename__ = "users"
 
+    id          = Column(Integer, primary_key=True, index=True)
+    username    = Column(String, unique=True, nullable=False, index=True)
+    email       = Column(String, unique=True, nullable=False, index=True)
+    hashed_pw   = Column(String, nullable=False)
+    is_active   = Column(Boolean, default=True)
+    is_verified = Column(Boolean, default=False)  # e-posta doğrulandı mı
+    created_at  = Column(DateTime, default=datetime.utcnow)
+
+
+class EmailVerification(Base):
+    """E-posta doğrulama kodları — 10 dk geçerli, tek kullanımlık."""
+    __tablename__ = "email_verifications"
+
     id         = Column(Integer, primary_key=True, index=True)
-    username   = Column(String, unique=True, nullable=False, index=True)
-    email      = Column(String, unique=True, nullable=False, index=True)
-    hashed_pw  = Column(String, nullable=False)
-    is_active  = Column(Boolean, default=True)
+    user_id    = Column(Integer, ForeignKey("users.id"), nullable=False)
+    code       = Column(String(6), nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    used       = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 

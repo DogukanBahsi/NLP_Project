@@ -8,6 +8,7 @@ import { ToastProvider } from "./components/Toast";
 import Dashboard from "./Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyEmailPage from "./pages/VerifyEmail";
 
 // Giriş yapmamış kullanıcıyı /login'e yönlendirir
 function ProtectedRoute({ children }) {
@@ -69,6 +70,7 @@ function AppRoutes() {
           </GuestRoute>
         }
       />
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
       {/* Bilinmeyen route'ları ana sayfaya yönlendir */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

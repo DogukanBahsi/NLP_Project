@@ -5,6 +5,9 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { loginUser, registerUser, fetchMe } from "../api";
 
+// AuthContext dışarıdan setUserFromToken çağrısına izin verir
+
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -23,18 +26,16 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = useCallback(async (email, password, rememberMe = false) => {
+    // Artık sadece kod gönderir, token döndürmez
     const data = await loginUser(email, password);
-    localStorage.setItem("auth_token", data.access_token);
     if (rememberMe) localStorage.setItem("remember_me", "true");
-    setUser(data.user);
-    return data.user;
+    return data; // { message, email }
   }, []);
 
   const register = useCallback(async (username, email, password, passwordConfirm) => {
+    // Artık sadece kod gönderir, token döndürmez
     const data = await registerUser(username, email, password, passwordConfirm);
-    localStorage.setItem("auth_token", data.access_token);
-    setUser(data.user);
-    return data.user;
+    return data; // { message, email }
   }, []);
 
   const logout = useCallback(() => {
@@ -43,8 +44,12 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  const setUserFromToken = useCallback((userData) => {
+    setUser(userData);
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, setUserFromToken }}>
       {children}
     </AuthContext.Provider>
   );

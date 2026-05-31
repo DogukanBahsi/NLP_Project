@@ -39,6 +39,16 @@ export const registerUser = async (username, email, password, password_confirm) 
   return res.data;
 };
 
+export const verifyLogin = async (email, code) => {
+  const res = await API.post(`/auth/verify-login?email=${encodeURIComponent(email)}&code=${code}`);
+  return res.data;
+};
+
+export const verifyEmail = async (email, code) => {
+  const res = await API.post(`/auth/verify-email?email=${encodeURIComponent(email)}&code=${code}`);
+  return res.data;
+};
+
 export const fetchMe = async (token) => {
   const res = await axios.get(`${BASE_URL}/auth/me`, {
     headers: { Authorization: `Bearer ${token}` },
