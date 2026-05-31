@@ -12,13 +12,13 @@ pause
 
 echo.
 echo [1/2] Backend (FastAPI) sunucusu baslatiliyor...
-start "HotelReviewAI - BACKEND" cmd /k "cd backend && echo Gerekli kutuphaneler kontrol ediliyor... && pip install -r requirements.txt && echo. && echo Backend baslatiliyor... && python -m uvicorn app.main:app --reload --port 8000"
+start "HotelReviewAI - BACKEND" cmd /k "cd /d "%~dp0" && call venv\Scripts\activate.bat && cd backend && echo Gerekli kutuphaneler kontrol ediliyor... && pip install -r requirements.txt && echo. && echo Backend baslatiliyor... && python -m uvicorn app.main:app --reload --port 8000"
 
 timeout /t 5 >nul
 
 echo.
 echo [2/2] Frontend (React) sunucusu baslatiliyor...
-start "HotelReviewAI - FRONTEND" cmd /k "cd frontend && echo Frontend paketleri kontrol ediliyor... && npm install && echo. && echo Frontend baslatiliyor... && npm run dev"
+start "HotelReviewAI - FRONTEND" cmd /k "cd /d "%~dp0frontend" && echo Frontend paketleri kontrol ediliyor... && npm install && echo. && echo Frontend baslatiliyor... && npm run dev"
 
 echo.
 echo ===================================================

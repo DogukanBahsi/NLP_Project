@@ -1,8 +1,47 @@
 import axios from "axios";
 
 export const API = axios.create({
-  baseURL: "http://127.0.0.1:8000"
+  baseURL: "http://127.0.0.1:8000",
 });
+
+// Her istekte localStorage'daki token'ı Authorization header'ına ekle
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("auth_token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+// 401 gelirse token'ı temizle (süresi dolmuş olabilir)
+API.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem("auth_token");
+      // Sayfayı yenile → ProtectedRoute login'e yönlendirir
+      window.location.href = "/login";
+    }
+    return Promise.reject(err);
+  }
+);
+
+// ── Auth API ─────────────────────────────────────────────────────────────────
+
+export const loginUser = async (email, password) => {
+  const res = await API.post("/auth/login", { email, password });
+  return res.data;
+};
+
+export const registerUser = async (username, email, password, password_confirm) => {
+  const res = await API.post("/auth/register", { username, email, password, password_confirm });
+  return res.data;
+};
+
+export const fetchMe = async (token) => {
+  const res = await axios.get("http://127.0.0.1:8000/auth/me", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
 
 export const searchHotels = async (query) => {
   // "Turkey hotel" suffix yerine sadece "Turkey" — "hotel" kelimesi Google Maps'te

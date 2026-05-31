@@ -40,9 +40,16 @@ pytz==2026.2
 reportlab==4.5.0
 pillow==12.2.0
 
+# Auth & Güvenlik
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+
 # Yardimci
 python-dotenv==1.2.2
 pydantic==2.13.3
+pydantic[email]==2.13.3
+email-validator==2.2.0
 PyYAML==6.0.3
 tqdm==4.67.3
 regex==2026.4.4

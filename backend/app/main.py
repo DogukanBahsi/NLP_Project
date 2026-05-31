@@ -20,6 +20,7 @@ from app.routers import (
     report_routes,
     external_sources_routes,
     external_ratings_routes,
+    auth_routes,
 )
 
 
@@ -56,6 +57,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_routes.router)
 app.include_router(hotel_routes.router)
 app.include_router(review_routes.router)
 app.include_router(dashboard_routes.router)

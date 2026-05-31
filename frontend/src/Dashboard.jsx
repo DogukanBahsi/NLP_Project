@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef, Component } from "react";
+import { useAuth } from "./context/AuthContext";
+import { useToast } from "./components/Toast";
 import {
   PieChart, Pie, Cell,
   BarChart, Bar,
@@ -101,6 +103,16 @@ function gradeConfig(score) {
 
 // ─── Main Component ────────────────────────────────────────────────────────────
 export default function Dashboard() {
+  const { user, logout } = useAuth();
+  const toast = useToast();
+
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  function handleLogout() {
+    logout();
+    toast.info("Çıkış yapıldı. Görüşürüz!");
+  }
+
   // Core state
   const [data, setData]         = useState(null);
   const [metrics, setMetrics]   = useState(null);
@@ -475,8 +487,31 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Bottom: BERT + metrics */}
+        {/* Bottom: kullanıcı bilgisi + logout */}
         <div style={{marginTop:"auto"}}>
+          {/* Kullanıcı kartı */}
+          {user && (
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 12px",background:"rgba(255,255,255,0.04)",borderRadius:10,border:"1px solid rgba(255,255,255,0.07)",marginBottom:12}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,minWidth:0}}>
+                <div style={{width:30,height:30,borderRadius:"50%",background:"linear-gradient(135deg,#3B82F6,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.8rem",fontWeight:700,flexShrink:0}}>
+                  {user.username?.[0]?.toUpperCase() ?? "U"}
+                </div>
+                <div style={{minWidth:0}}>
+                  <p style={{fontSize:"0.8rem",fontWeight:600,color:"var(--text-primary)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.username}</p>
+                  <p style={{fontSize:"0.7rem",color:"var(--text-muted)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.email}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowLogoutModal(true)}
+                style={{background:"transparent",border:"none",color:"var(--text-muted)",cursor:"pointer",padding:4,borderRadius:6,flexShrink:0,transition:"color 0.2s"}}
+                title="Çıkış Yap"
+                onMouseOver={e => e.currentTarget.style.color="var(--danger)"}
+                onMouseOut={e => e.currentTarget.style.color="var(--text-muted)"}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              </button>
+            </div>
+          )}
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14,padding:"8px 12px",background:"rgba(255,255,255,0.04)",borderRadius:10,border:"1px solid rgba(255,255,255,0.07)"}}>
             <div style={{width:8,height:8,borderRadius:"50%",flexShrink:0,background:bertStatus==="ready"?"#10B981":"#F59E0B",boxShadow:bertStatus==="ready"?"0 0 6px #10B981,0 0 12px #10B98170":"0 0 6px #F59E0B,0 0 12px #F59E0B70",animation:"neonPulse 2s ease-in-out infinite"}}></div>
             <span style={{fontSize:"0.76rem",color:"var(--text-muted)"}}>
@@ -1455,6 +1490,27 @@ export default function Dashboard() {
         </>
       )}
     </div>
+
+    {/* ── Logout Confirmation Modal ─────────────────────────────────────────── */}
+    {showLogoutModal && (
+      <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:9000}}>
+        <div className="glass-panel" style={{padding:32,maxWidth:360,width:"90%",textAlign:"center"}}>
+          <div style={{width:48,height:48,borderRadius:"50%",background:"rgba(239,68,68,0.15)",border:"1px solid rgba(239,68,68,0.3)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </div>
+          <h3 style={{fontSize:"1.1rem",fontWeight:700,marginBottom:8}}>Çıkış yapmak istiyor musunuz?</h3>
+          <p style={{color:"var(--text-muted)",fontSize:"0.88rem",marginBottom:28}}>Oturumunuz kapatılacak ve giriş sayfasına yönlendirileceksiniz.</p>
+          <div style={{display:"flex",gap:10}}>
+            <button onClick={() => setShowLogoutModal(false)} style={{flex:1,padding:"10px 0",borderRadius:10,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.05)",color:"var(--text-primary)",cursor:"pointer",fontWeight:600,fontSize:"0.9rem"}}>
+              İptal
+            </button>
+            <button onClick={handleLogout} style={{flex:1,padding:"10px 0",borderRadius:10,border:"1px solid rgba(239,68,68,0.3)",background:"rgba(239,68,68,0.15)",color:"#ef4444",cursor:"pointer",fontWeight:600,fontSize:"0.9rem"}}>
+              Çıkış Yap
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     </ErrorBoundary>
   );
 }
