@@ -19,7 +19,7 @@
 
 **HotelReviewAI**, otel müşteri yorumlarını NLP (Doğal Dil İşleme) ile otomatik analiz eden tam yığın bir yapay zekâ platformudur. Yüzlerce yorumu manuel okumak yerine; duygu analizi, şikayet kategorisi, risk skoru ve aksiyon önerileri sunar.
 
-> **Akademik Proje** — İstanbul Gedik Üniversitesi, NLP Dersi, 2025–2026 Bahar Dönemi
+> **Akademik Proje** — İstanbul Gedik Üniversitesi, Doğal Dil İşleme Dersi, 2025–2026 Bahar Dönemi
 
 ---
 
@@ -140,7 +140,7 @@ NLP_Project/
 | **Ders** | Doğal Dil İşleme (NLP) |
 | **Üniversite** | İstanbul Gedik Üniversitesi |
 | **Dönem** | 2025–2026 Bahar |
-| **Danışman** | Başak Buluz Kömeçoğlu |
+| **Dersi Veren** | Başak Buluz Kömeçoğlu |
 
 ---
 
