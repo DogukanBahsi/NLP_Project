@@ -153,7 +153,7 @@ NLP_Project/
 | **Berat Demirbaş** | Frontend, Dashboard Tasarımı |
 
 📧 dgkn.bhsi@gmail.com · [GitHub](https://github.com/DogukanBahsi) · [LinkedIn](https://www.linkedin.com/in/dogukanbhs/)
-
+📧 dgkn.bhsi@gmail.com · [GitHub](https://github.com/DogukanBahsi) · [LinkedIn](https://www.linkedin.com/in/beratdemirbaş)
 ---
 
 <p align="center"><b>HotelReviewAI — Otel Yorumlarını Akıllı Veriye Dönüştürür 🚀</b></p>
