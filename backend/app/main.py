@@ -28,6 +28,29 @@ async def lifespan(app: FastAPI):
     # ── Startup ──────────────────────────────────────────────────────────────
     Base.metadata.create_all(bind=engine)
 
+    # Eksik kolonları ekle (migration yerine basit ALTER TABLE)
+    from sqlalchemy import text
+    with engine.connect() as conn:
+        try:
+            conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE"))
+            conn.commit()
+        except Exception:
+            pass
+        try:
+            conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS email_verifications (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER REFERENCES users(id),
+                    code VARCHAR(6) NOT NULL,
+                    expires_at TIMESTAMP NOT NULL,
+                    used BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMP DEFAULT NOW()
+                )
+            """))
+            conn.commit()
+        except Exception:
+            pass
+
     # DISABLE_BERT=true ise (production/hafif mod) BERT yüklenmez
     if os.getenv("DISABLE_BERT", "false").lower() != "true":
         from app.nlp.bert_analyzer import TurkishBertAnalyzer
