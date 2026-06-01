@@ -725,7 +725,7 @@ export default function Dashboard() {
                 <option value="yearly" style={{background:"#1e293b"}}>Son 1 Yıl</option>
               </select>
             </div>
-            <button className="btn btn-primary" onClick={()=>window.open(`http://127.0.0.1:8000/reports/pdf?time_frame=${timeFrame}${data.selected_hotel?'&hotel_id='+data.selected_hotel.id:''}`)}>
+            <button className="btn btn-primary" onClick={()=>window.open(`${import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'}/reports/pdf?time_frame=${timeFrame}${data.selected_hotel?'&hotel_id='+data.selected_hotel.id:''}`)}>
               <DownloadIcon/> Rapor İndir (PDF)
             </button>
           </div>
