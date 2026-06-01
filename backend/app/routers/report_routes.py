@@ -141,15 +141,24 @@ def generate_pdf_report(
         reviews = all_reviews
         hotel_name = "Tüm Oteller"
 
-    # Font tanımlamaları
+    # Font tanımlamaları — Türkçe karakter desteği için DejaVu (matplotlib ile birlikte gelir)
     try:
-        pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
-        pdfmetrics.registerFont(TTFont('Arial-Bold', 'arialbd.ttf'))
-        default_font = 'Arial'
-        bold_font = 'Arial-Bold'
-    except:
-        default_font = 'Helvetica'
-        bold_font = 'Helvetica-Bold'
+        import matplotlib
+        font_dir = os.path.join(os.path.dirname(matplotlib.__file__), 'mpl-data', 'fonts', 'ttf')
+        pdfmetrics.registerFont(TTFont('DejaVu',     os.path.join(font_dir, 'DejaVuSans.ttf')))
+        pdfmetrics.registerFont(TTFont('DejaVu-Bold',os.path.join(font_dir, 'DejaVuSans-Bold.ttf')))
+        default_font = 'DejaVu'
+        bold_font    = 'DejaVu-Bold'
+    except Exception as _fe:
+        # Windows lokal geliştirme için Arial dene
+        try:
+            pdfmetrics.registerFont(TTFont('Arial',      'C:/Windows/Fonts/arial.ttf'))
+            pdfmetrics.registerFont(TTFont('Arial-Bold', 'C:/Windows/Fonts/arialbd.ttf'))
+            default_font = 'Arial'
+            bold_font    = 'Arial-Bold'
+        except:
+            default_font = 'Helvetica'
+            bold_font    = 'Helvetica-Bold'
 
     doc = SimpleDocTemplate(file_path, pagesize=letter, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
     elements = []
