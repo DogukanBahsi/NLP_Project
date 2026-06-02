@@ -29,7 +29,7 @@ load_dotenv()
 
 # ─── Yapılandırma ─────────────────────────────────────────────────────────────
 SERPAPI_KEY      = os.getenv("SERPAPI_KEY",
-                              "f99947648f6b14c4c5d6fd92ee2d17c937b4233afb4c7c759b008858a717df42")
+                              "87cfc73249d31c6bd49f954179f61ff60d921ea21c99f60add4a06d302aa2a26")
 SERPAPI_DEBUG    = os.getenv("SERPAPI_DEBUG", "true").lower() == "true"
 SERPAPI_BASE_URL = "https://serpapi.com/search.json"
 
